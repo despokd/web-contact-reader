@@ -3,7 +3,7 @@
 ## Features
 - Upload vcf file with drag and drop
 - Show instantly data
-- use table view, with pagnation, sorting, searching, details on click
+- use table view, with pagination, sorting, searching, details on click
 - Use card view
 
 ## Used libraries
@@ -12,9 +12,9 @@
 
 ***
 ## TODO
-- Create Frontent
+- Create Frontend
 - Create File to JSON for Frontend converter
 ## Wishlist
-- Muliple file formats
+- Multiple file formats
 - Edit and export data
 - Save in web database as easy contact book
