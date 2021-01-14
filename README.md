@@ -12,7 +12,8 @@
 
 ***
 ## TODO
-- Create 
+- Create Frontent
+- Create File to JSON for Frontend converter
 ## Wishlist
 - Muliple file formats
 - Edit and export data

@@ -1,15 +1,12 @@
 # humanstxt.org/
 # The humans responsible & technology colophon
-
-# TEAM
-
-    <name> -- <role> -- <twitter>
-
-# THANKS
-
-    <name>
-
-# TECHNOLOGY COLOPHON
-
-    CSS3, HTML5
-    Apache Server Configs, jQuery, Modernizr, Normalize.css
+                            
+# TEAM                     
+Author: Kilian Domaratius                      
+Site: contacts@tequilian.de, tequilian.de                        
+Location: Dresden, Germany
+                            
+# SITE                      
+Standards: HTML5, CSS3, PHP 7                       
+Components: Modernizr, Normalize.css, Vuesax 4, Vue 3                          
+Software: VS Code, GitHub

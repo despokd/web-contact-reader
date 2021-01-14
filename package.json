@@ -1,10 +1,13 @@
 {
-    "name": " ",
+    "name": "web-contact-reader",
     "version": "0.0.1",
-    "description": "",
-    "keywords": "",
-    "license": "",
-    "author": "",
+    "description": "Display VCF-file contact data readable in a website",
+    "keywords": [
+      "vcf",
+      "contacts"
+    ],
+    "license": "MIT",
+    "author": "Kilian Domaratius",
     "scripts": {
       "build": "parcel build index.html",
       "dev": "parcel index.html --open",
