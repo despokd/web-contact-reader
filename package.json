@@ -1,21 +1,52 @@
 {
-    "name": "web-contact-reader",
-    "version": "0.0.1",
-    "description": "Display VCF-file contact data readable in a website",
-    "keywords": [
-      "vcf",
-      "contacts"
-    ],
-    "license": "MIT",
-    "author": "Kilian Domaratius",
-    "scripts": {
-      "build": "parcel build index.html",
-      "dev": "parcel index.html --open",
-      "start": "npm run build && npm run dev",
-      "test": "echo \"Error: no test specified\" && exit 1"
+  "name": "web-contact-reader",
+  "version": "0.0.1",
+  "description": "Display VCF-file contact data readable in a website",
+  "keywords": [
+    "vcf",
+    "contacts"
+  ],
+  "license": "MIT",
+  "author": "Kilian Domaratius",
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "@vue/cli-plugin-babel": "4.1.1",
+    "vue": "^2.6.11"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-eslint": "4.1.1",
+    "@vue/cli-service": "4.1.1",
+    "babel-eslint": "^10.0.3",
+    "eslint": "^6.7.2",
+    "eslint-plugin-vue": "^6.0.1",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
     },
-    "devDependencies": {
-      "parcel-bundler": "^1.12.4"
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "rules": {},
+    "parserOptions": {
+      "parser": "babel-eslint"
     }
-  }
-  
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
+}
