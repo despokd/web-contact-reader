@@ -1,6 +1,6 @@
 {
-  "name": "vuetify-i18n-boilerplate",
-  "version": "0.1.0",
+  "name": "web-contact-reader",
+  "version": "0.1",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
