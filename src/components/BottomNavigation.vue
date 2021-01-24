@@ -1,5 +1,5 @@
 <template>
-  <v-bottom-navigation>
+  <v-bottom-navigation color="primary">
     <v-btn value="contacts">
       <span>Contacts</span>
 
