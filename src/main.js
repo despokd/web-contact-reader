@@ -1,5 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import './plugins/vuesax.js'
+import router from './router'
+import wb from './registerServiceWorker'
 
-createApp(App).mount('#app')
+const Vue = createApp(App).use(router).mount('#app')
+Vue.prototype.$workbox = wb;
