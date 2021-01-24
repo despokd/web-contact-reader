@@ -6,7 +6,11 @@
 - use table view, with pagination, sorting, searching, details on click
 - Use card view
 
-***
+## Used libraries
+- Vue
+- Vuetify
+- Material Design Icons
+
 ## TODO
 - Create Frontend
 - Create File to JSON for Frontend converter
