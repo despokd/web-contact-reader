@@ -1,6 +1,6 @@
 {
   "name": "web-contact-reader",
-  "version": "0.1",
+  "version": "0.1.0",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -9,14 +9,14 @@
   "dependencies": {
     "core-js": "^3.8.3",
     "material-design-icons": "^3.0.1",
-    "vue": "^2.6.11",
-    "vue-i18n": "^8.18.2",
-    "vue-router": "^3.3.4",
+    "vue": "^2.6.12",
+    "vue-i18n": "^8.22.4",
+    "vue-router": "^3.4.9",
     "vuetify": "^2.4.3",
-    "vuex": "^3.4.0"
+    "vuex": "^3.6.0"
   },
   "devDependencies": {
-    "@mdi/js": "^5.3.45",
+    "@mdi/js": "^5.9.55",
     "@vue/cli-plugin-babel": "^4.5.11",
     "@vue/cli-plugin-eslint": "^4.5.11",
     "@vue/cli-plugin-router": "^4.5.11",
@@ -25,10 +25,10 @@
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
-    "sass": "^1.26.5",
+    "sass": "^1.32.5",
     "sass-loader": "^8.0.2",
     "vue-cli-plugin-vuetify": "^2.0.9",
-    "vue-template-compiler": "^2.6.11",
+    "vue-template-compiler": "^2.6.12",
     "vuetify-loader": "^1.6.0"
   },
   "eslintConfig": {
