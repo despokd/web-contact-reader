@@ -17,7 +17,7 @@ export default new Vuetify({
     iconfont: 'mdiSvg'
   },
   theme: {
-    dark: false,
+    dark: window.matchMedia("(prefers-color-scheme: dark)").matches,
     themes: {
       dark: {
         primary: '#1689E7',
@@ -38,5 +38,5 @@ export default new Vuetify({
         error: '#FF5252'
       }
     }
-  }
+  },
 })
