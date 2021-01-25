@@ -11,16 +11,6 @@
 - Vuetify
 - Material Design Icons
 
-## TODO
-- Create Frontend
-- Create File to JSON for Frontend converter
-- Logo/icons
-## Wishlist
-- Multiple file formats
-- Edit and export data
-- Create new contacts
-- Save in web database as easy contact book
-
 ## Project setup
 ```
 npm install

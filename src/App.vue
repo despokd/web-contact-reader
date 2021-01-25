@@ -1,12 +1,12 @@
 <template>
   <v-app>
-    <v-navigation-drawer app>
-      <!-- -->
-    </v-navigation-drawer>
-
+    <NavigationDrawer />
+    <AppBar />
 
     <!-- Sizes your content based upon application components -->
     <v-main>
+      <QuickStart />
+
       <!-- Provides the application the proper gutter -->
       <v-container fluid>
         <!-- If using vue-router -->
@@ -14,22 +14,23 @@
       </v-container>
     </v-main>
 
-    <v-footer app>
-      <!-- -->
-    </v-footer>
-    <BottomNavigation/>
+    <Footer />
   </v-app>
 </template>
 
-<style lang="scss">
-
-</style>
+<style lang="scss"></style>
 <script>
-import BottomNavigation from '@/components/BottomNavigation.vue'
+import NavigationDrawer from "@/components/NavigationDrawer.vue";
+import AppBar from "@/components/AppBar.vue";
+import Footer from "@/components/Footer.vue";
+import QuickStart from "@/components/QuickStart.vue";
 
 export default {
   components: {
-    BottomNavigation
-  }
-}
+    NavigationDrawer,
+    AppBar,
+    Footer,
+    QuickStart,
+  },
+};
 </script>
