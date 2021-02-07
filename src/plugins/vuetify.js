@@ -19,6 +19,7 @@ export default new Vuetify({
   },
   theme: {
     dark: window.matchMedia("(prefers-color-scheme: dark)").matches,
+    default: 'light',
     themes: {
       dark: {
         primary: '#1689E7',
