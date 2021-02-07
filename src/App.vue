@@ -51,9 +51,17 @@ export default {
   data: () => ({
     drawer: null,
     items: [
-      { title: "Contacts", icon: "mdi-contacts", to: "/" },
-      { title: "Companies", icon: "mdi-office-building", to: "/companies" },
-      { title: "About", icon: "mdi-information-outline", to: "/about" },
+      { title: "Contacts", icon: "mdi-contacts", to: { name: "Contacts" } },
+      {
+        title: "Companies",
+        icon: "mdi-office-building",
+        to: { name: "Companies" },
+      },
+      {
+        title: "About",
+        icon: "mdi-information-outline",
+        to: { name: "About" },
+      },
     ],
   }),
 };
