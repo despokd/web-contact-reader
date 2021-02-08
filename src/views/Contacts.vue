@@ -15,24 +15,23 @@
 <script>
 export default {
   methods: {
-    importVcf: function(files) {
+    importVcf: function(event) {
       // Browser is not compatible
       if (!window.FileReader) return;
 
+      console.log(event);
+
       // discard if no files given
-      if (files.length <= 0) return;
+      if (event.length <= 0) return;
 
-      // get files content
-      files.forEach((file) => {
-        const reader = new FileReader();
-        reader.addEventListener("load", (event) => {
-          console.log(event.target.result);
-        });
-        reader.readAsText(file);
-      });
-
-      // convert to json
-
+      let fr = new FileReader();
+      fr.onload = function() {
+        // parse file to vCard
+        let vCard = require("vcf");
+        let cards = vCard.parse(fr.result);
+        console.log(cards);
+      };
+      fr.readAsText(event[0]);
     },
   },
 };
