@@ -62,7 +62,8 @@ export default {
 
         // add to data list
         cards.forEach((card) => {
-          this.data.contacts.push(card.toJSON()[1]);
+          // TODO add do indexed db, may use https://github.com/jakearchibald/idb
+          console.debug(card.toJSON()[1]);
         });
       };
       fr.readAsText(event[0]);

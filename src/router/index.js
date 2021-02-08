@@ -6,6 +6,11 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
+    redirect: "/contacts",
+    name: "Home",
+  },
+  {
+    path: "/contacts",
     name: "Contacts",
     component: () => import("@/views/Contacts.vue"),
   },
