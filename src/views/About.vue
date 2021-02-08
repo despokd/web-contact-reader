@@ -30,6 +30,7 @@
         <v-icon>{{ item.icon }}</v-icon>
       </v-btn>
     </v-col>
+    <v-divider></v-divider>
     <v-col cols="12" class="mt-3">
       <h2>Legal notice (german)</h2>
       <h3>Angaben gemäß § 5 TMG</h3>
