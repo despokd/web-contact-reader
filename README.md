@@ -6,6 +6,8 @@
 - use table view, with pagination, sorting, searching, details on click
 - Use card view
 
+## TODO
+-  Fix navigation drawer 'home' always active
 ## Used libraries
 - Vue
 - Vuetify
