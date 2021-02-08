@@ -8,10 +8,6 @@
 
 ## TODO
 -  Fix navigation drawer 'home' always active
-## Used libraries
-- Vue
-- Vuetify
-- Material Design Icons
 
 ## Project setup
 ```
