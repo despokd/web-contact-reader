@@ -1,16 +1,22 @@
 <template>
   <v-app id="inspire">
     <v-navigation-drawer v-model="drawer" app>
-      <v-list-item>
-        <v-list-item-content>
-          <v-list-item-title class="title">
-            Contact reader
-          </v-list-item-title>
-          <v-list-item-subtitle>
-            No accounts or native apps
-          </v-list-item-subtitle>
-        </v-list-item-content>
-      </v-list-item>
+      <template v-slot:prepend>
+        <v-list-item two-line>
+          <v-list-item-avatar>
+            <img src="/img/logo/logo-small-color.png" />
+          </v-list-item-avatar>
+
+          <v-list-item-content>
+            <v-list-item-title class="title">
+              Contact reader
+            </v-list-item-title>
+            <v-list-item-subtitle>
+              No accounts or apps
+            </v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+      </template>
 
       <v-divider></v-divider>
 
