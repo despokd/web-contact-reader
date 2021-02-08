@@ -3,7 +3,7 @@
     <h1>Contacts</h1>
     <template>
       <v-file-input
-        accept=".vcf,.txt"
+        accept=".vcf"
         label="Import .vcf-file"
         @change="importVcf($event)"
         multiple
