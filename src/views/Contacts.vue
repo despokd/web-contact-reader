@@ -9,9 +9,12 @@
         ></v-file-input>
       </template>
     </v-col>
-    <v-col>
-      <pre>{{ contacts }}</pre>
-      <pre>{{ vCardContacts }}</pre>
+    <v-col cols="12">
+      <ContactCard
+        v-for="(contact, index) in vCardContacts"
+        :key="index"
+        :contact="contact"
+      />
     </v-col>
 
     <v-snackbar v-model="snackbar.open" :timeout="snackbar.timeout">
@@ -31,10 +34,14 @@
 </template>
 
 <script>
+import ContactCard from "@/components/ContactCard.vue";
 import { openDB } from "idb/with-async-ittr.js";
 
 export default {
-  name: "contacts-component",
+  name: "contacts",
+  components: {
+    ContactCard,
+  },
   data: () => {
     return {
       contacts: [],
@@ -91,7 +98,11 @@ export default {
   computed: {
     vCardContacts: function() {
       let vCard = require("vcf");
-      return vCard.fromJSON(this.contacts[0]);
+      let returnArray = new Array();
+      this.contacts.forEach((contact) => {
+        returnArray.push(vCard.fromJSON(contact));
+      });
+      return returnArray;
     },
   },
 };
