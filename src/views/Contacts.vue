@@ -6,7 +6,6 @@
         accept=".vcf"
         label="Import .vcf-file"
         @change="importVcf($event)"
-        multiple
       ></v-file-input>
     </template>
 
@@ -27,6 +26,8 @@
 </template>
 
 <script>
+import { openDB } from "idb/with-async-ittr.js";
+
 export default {
   data: function() {
     return {
@@ -63,11 +64,29 @@ export default {
         // add to data list
         cards.forEach((card) => {
           // TODO add do indexed db, may use https://github.com/jakearchibald/idb
-          console.debug(card.toJSON()[1]);
+          saveContact(card.toJSON()[1]);
         });
       };
-      fr.readAsText(event[0]);
+      fr.readAsText(event[0]); 
     },
   },
 };
+
+async function saveContact(contact) {
+  const db = await openDB("ContactReader", 1, {
+    upgrade(db) {
+      // Create a store of objects
+      db.createObjectStore("contacts", {
+        // The 'id' property of the object will be the key.
+        keyPath: "id",
+        // If it isn't explicitly set, create a value by auto incrementing.
+        autoIncrement: true,
+      });
+    },
+  });
+
+  // add contact
+  console.log(contact);
+  await db.add("contacts", contact);
+}
 </script>
