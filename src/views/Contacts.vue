@@ -1,13 +1,18 @@
 <template>
   <div class="contacts">
-    <h1>Contacts</h1>
-    <template>
-      <v-file-input
-        accept=".vcf"
-        label="Import .vcf-file"
-        @change="importVcf($event)"
-      ></v-file-input>
-    </template>
+    <v-col cols="12">
+      <template>
+        <v-file-input
+          accept=".vcf"
+          label="Import .vcf-file"
+          @change="importVcf($event)"
+        ></v-file-input>
+      </template>
+    </v-col>
+    <v-col>
+      <pre>{{ contacts }}</pre>
+      <pre>{{ vCardContacts }}</pre>
+    </v-col>
 
     <v-snackbar v-model="snackbar.open" :timeout="snackbar.timeout">
       {{ snackbar.text }}
@@ -29,7 +34,8 @@
 import { openDB } from "idb/with-async-ittr.js";
 
 export default {
-  data: function() {
+  name: "contacts-component",
+  data: () => {
     return {
       contacts: [],
       snackbar: {
@@ -38,6 +44,10 @@ export default {
         open: false,
       },
     };
+  },
+  created() {
+    initContactsDb();
+    this.getContacts();
   },
   methods: {
     importVcf: function(event) {
@@ -56,37 +66,59 @@ export default {
       }
 
       let fr = new FileReader();
-      fr.onload = function() {
+      fr.onload = () => {
         // parse file to vCard
         let vCard = require("vcf");
         let cards = vCard.parse(fr.result);
 
-        // add to data list
+        // add to data db
         cards.forEach((card) => {
-          // TODO add do indexed db, may use https://github.com/jakearchibald/idb
-          saveContact(card.toJSON()[1]);
+          saveContact(card.toJSON());
         });
+
+        // add to data compnent
+        this.getContacts();
       };
-      fr.readAsText(event[0]); 
+      fr.readAsText(event);
+    },
+    getContacts: function() {
+      // get entries of database
+      getContactsFromDb().then((result) => {
+        this.contacts = result;
+      });
+    },
+  },
+  computed: {
+    vCardContacts: function() {
+      let vCard = require("vcf");
+      return vCard.fromJSON(this.contacts[0]);
     },
   },
 };
 
-async function saveContact(contact) {
-  const db = await openDB("ContactReader", 1, {
+// indexedDb version
+const dbVersion = 3;
+
+async function initContactsDb() {
+  await openDB("ContactReader", dbVersion, {
     upgrade(db) {
-      // Create a store of objects
       db.createObjectStore("contacts", {
-        // The 'id' property of the object will be the key.
         keyPath: "id",
-        // If it isn't explicitly set, create a value by auto incrementing.
         autoIncrement: true,
       });
     },
   });
+}
+
+async function saveContact(contact) {
+  const db = await openDB("ContactReader", dbVersion);
 
   // add contact
-  console.log(contact);
   await db.add("contacts", contact);
+}
+
+async function getContactsFromDb() {
+  const db = await openDB("ContactReader", dbVersion);
+  return await db.getAll("contacts");
 }
 </script>
