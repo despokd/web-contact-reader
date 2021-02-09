@@ -7,7 +7,8 @@
 - Use card view
 
 ## TODO
--  Fix navigation drawer 'home' always active
+- Fix navigation drawer 'home' always active
+- Setup manifest and `<head>` properly
 
 ## Project setup
 ```
