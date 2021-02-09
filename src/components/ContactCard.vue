@@ -4,26 +4,25 @@
       <v-card-text>
         <pre>{{ contact }}</pre>
         <v-divider></v-divider>
-        <v-card-title class="mt-8">
-          <v-list>
-            <v-list-item two-line>
-              <v-list-item-avatar>
-                <img src="https://randomuser.me/api/portraits/women/81.jpg" />
-              </v-list-item-avatar>
+        <v-list>
+          <v-list-item two-line>
+            <v-list-item-avatar :color="randomColor">
+              <img v-if="hasImg" :src="imgSrc" :alt="name.full" />
+              <span v-else class="headline">{{ name.short }}</span>
+            </v-list-item-avatar>
 
-              <v-list-item-content>
-                <v-list-item-title>{{ name.full }}</v-list-item-title>
-                <v-list-item-subtitle>
-                  <span
-                    v-for="(item, index) in defaultField('org')"
-                    :key="index"
-                    >{{ item }}</span
-                  >
-                </v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list>
-        </v-card-title>
+            <v-list-item-content>
+              <v-list-item-title>{{ name.full }}</v-list-item-title>
+              <v-list-item-subtitle>
+                <span
+                  v-for="(item, index) in defaultField('org')"
+                  :key="index"
+                  >{{ item }}</span
+                >
+              </v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
       </v-card-text>
     </v-card>
   </div>
@@ -33,23 +32,44 @@
 export default {
   name: "contact-card",
   props: ["contact"],
+  data: () => {
+    return {
+      hasImg: false,
+      randomColor: "#" + ((Math.random() * 0xffffff) << 0).toString(16),
+    };
+  },
   computed: {
+    defaultField: function() {
+      return (field) => this.getFieldData(this.contact.get(field));
+    },
     name: function() {
       let name = this.getFieldData(this.contact.get("n"));
 
+      // set up name
       let fullName = {
-        full: this.getFieldData(this.contact.get("fn"))[0],
-        prefix: name[3],
-        forename: name[1],
-        middlenames: name[2],
-        surname: name[0],
-        sufix: name[4],
+        full: "",
+        short: "",
+        prefix: name[3] !== undefined ? name[3] : "",
+        forename: name[1] !== undefined ? name[1] : "",
+        middlenames: name[2] !== undefined ? name[2] : "",
+        surname: name[0] !== undefined ? name[0] : "",
+        sufix: name[4] !== undefined ? name[4] : "",
       };
+
+      // get full name
+      fullName.full =
+        this.getFieldData(this.contact.get("fn")) !== []
+          ? this.getFieldData(this.contact.get("fn"))[0]
+          : fullName.forename + " " + fullName.surname;
+
+      // get short name
+      fullName.short = fullName.forename.charAt(0) + fullName.surname.charAt(0);
 
       return fullName;
     },
-    defaultField: function() {
-      return field => this.getFieldData(this.contact.get(field));
+    imgSrc: function() {
+      console.log(this.contact.get("PHOTO"));
+      return '';
     },
   },
   methods: {
@@ -65,10 +85,16 @@ export default {
 
       // decode quoted printables
       if ("charset" in field) {
-        dataArr.forEach((string, index) => {
-          let decodedStr = utf8_decode(quoted_printable_decode(string));
-          dataArr[index] = decodedStr.replace(/=$/, "...");   // add ellipsis, when string not long enough and end with =
-        });
+        switch (field.charset) {
+          case "UTF-8":
+            dataArr.forEach((string, index) => {
+              let decodedStr = utf8_decode(quoted_printable_decode(string));
+              dataArr[index] = decodedStr.replace(/=$/, "..."); // add ellipsis, when string not long enough and end with =
+            });
+            break;
+          default:
+            dataArr[0] = "error";
+        }
       }
 
       // return string in array
