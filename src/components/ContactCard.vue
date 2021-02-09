@@ -1,6 +1,6 @@
 <template>
   <div class="contact-card">
-    <v-card :id="'contact-card-' + contact.id" class="mb-3">
+    <v-card v-if="!deleted" :id="'contact-card-' + contact.id" class="mb-3">
       <v-card-text>
         <pre>{{ contact }}</pre>
         <v-divider></v-divider>
@@ -33,15 +33,36 @@
           </v-icon>
           Edit
         </v-btn>
+        <v-btn color="error" text @click="deleteContact()">
+          <v-icon left>
+            mdi-delete
+          </v-icon>
+          Delete
+        </v-btn>
       </v-card-actions>
     </v-card>
-    <ContactEdit :open="dialog" :contact="contact"/>
-    
+
+    <ContactEdit :open="dialog" :contact="contact" :color="randomColor" />
+
+    <v-snackbar v-model="snackbar.open" :timeout="snackbar.timeout">
+      {{ snackbar.text }}
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          text
+          color="primary"
+          v-bind="attrs"
+          @click="snackbar.open = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
   </div>
 </template>
 
 <script>
-import ContactEdit from '@/components/ContactEdit.vue';
+import ContactEdit from "@/components/ContactEdit.vue";
+import { openDB } from "idb/with-async-ittr.js";
 
 export default {
   name: "contact-card",
@@ -52,8 +73,35 @@ export default {
   data: () => {
     return {
       dialog: false,
+      deleted: false,
       randomColor: "#" + ((Math.random() * 0xffffff) << 0).toString(16),
+      snackbar: {
+        text: "Error",
+        timeout: "3000",
+        open: false,
+      },
     };
   },
+  methods: {
+    deleteContact() {
+      let id = this.contact.id;
+      let name = this.contact.name.full;
+
+      deleteContactDb(id);
+      this.deleted = true;
+      this.snackbar.text = name + " deleted";
+      this.snackbar.open = true;
+    },
+  },
 };
+
+// indexedDb version
+const dbVersion = 5;
+
+async function deleteContactDb(id) {
+  const db = await openDB("ContactReader", dbVersion);
+
+  // add contact
+  await db.delete("contacts", id);
+}
 </script>

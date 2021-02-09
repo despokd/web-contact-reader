@@ -1,12 +1,24 @@
 <template>
   <div class="contact-edit">
-    <v-dialog v-model="open" persistent max-width="600px">
+    <v-dialog v-model="dialog" persistent max-width="400px">
       <v-card>
         <v-card-title>
-          <span class="headline">User Profile</span>
+          <span class="headline">Edit {{ contact.name.full }}</span>
         </v-card-title>
         <v-card-text>
           <v-container>
+            <v-row>
+              <v-col cols="12">
+                <v-avatar :color="color">
+                  <img
+                    v-if="contact.img.hasImg"
+                    :src="contact.img.src"
+                    :alt="contact.name.full"
+                  />
+                  <span v-else class="headline">{{ contact.name.short }}</span>
+                </v-avatar>
+              </v-col>
+            </v-row>
             <v-row>
               <v-col cols="12" sm="6" md="4">
                 <v-text-field label="Legal first name*" required></v-text-field>
@@ -80,6 +92,21 @@
 <script>
 export default {
   name: "contact-edit",
-  props: ["open", "contact"],
+  props: {
+    open: {
+      type: Boolean,
+      default: false,
+    },
+    contact: Object,
+    color: {
+      type: String,
+      default: "#" + ((Math.random() * 0xffffff) << 0).toString(16),
+    },
+  },
+  data: () => {
+    return {
+      dialog: false,
+    };
+  },
 };
 </script>
