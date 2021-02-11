@@ -1,89 +1,75 @@
 <template>
   <div class="contact-edit">
-    <v-dialog v-model="dialog" persistent max-width="400px">
+    <v-btn color="primary" text @click="dialog = true">
+      <v-icon left>
+        mdi-pencil
+      </v-icon>
+      Edit
+    </v-btn>
+
+    <v-dialog v-model="dialog" max-width="600px">
       <v-card>
         <v-card-title>
-          <span class="headline">Edit {{ contact.name.full }}</span>
+          <v-row justify="center">
+            <v-col cols="12" class="d-flex justify-center">
+              <v-avatar :color="color" size="100" class="mt-6">
+                <img
+                  v-if="cachedContact.img.hasImg"
+                  :src="cachedContact.img.src"
+                  :alt="cachedContact.name.full"
+                />
+                <span v-else class="text-h4">{{
+                  cachedContact.name.short
+                }}</span>
+              </v-avatar>
+            </v-col>
+            <v-col class="d-flex justify-center">
+              <p>{{ cachedContact.name.full }}</p>
+            </v-col>
+          </v-row>
         </v-card-title>
         <v-card-text>
           <v-container>
             <v-row>
-              <v-col cols="12">
-                <v-avatar :color="color">
-                  <img
-                    v-if="contact.img.hasImg"
-                    :src="contact.img.src"
-                    :alt="contact.name.full"
-                  />
-                  <span v-else class="headline">{{ contact.name.short }}</span>
-                </v-avatar>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col cols="12" sm="6" md="4">
-                <v-text-field label="Legal first name*" required></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="4">
+              <v-col cols="12" sm="6" md="5">
                 <v-text-field
-                  label="Legal middle name"
-                  hint="example of helper text only on focus"
+                  label="Forename"
+                  v-model="cachedContact.name.forename"
                 ></v-text-field>
               </v-col>
-              <v-col cols="12" sm="6" md="4">
+              <v-col cols="12" sm="6" md="7">
                 <v-text-field
-                  label="Legal last name*"
-                  hint="example of persistent helper text"
-                  persistent-hint
-                  required
+                  label="Middle names"
+                  v-model="cachedContact.name.middlenames"
                 ></v-text-field>
               </v-col>
               <v-col cols="12">
-                <v-text-field label="Email*" required></v-text-field>
-              </v-col>
-              <v-col cols="12">
                 <v-text-field
-                  label="Password*"
-                  type="password"
-                  required
+                  label="Surname"
+                  v-model="cachedContact.name.surname"
                 ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6">
-                <v-select
-                  :items="['0-17', '18-29', '30-54', '54+']"
-                  label="Age*"
-                  required
-                ></v-select>
-              </v-col>
-              <v-col cols="12" sm="6">
-                <v-autocomplete
-                  :items="[
-                    'Skiing',
-                    'Ice hockey',
-                    'Soccer',
-                    'Basketball',
-                    'Hockey',
-                    'Reading',
-                    'Writing',
-                    'Coding',
-                    'Basejump',
-                  ]"
-                  label="Interests"
-                  multiple
-                ></v-autocomplete>
               </v-col>
             </v-row>
           </v-container>
-          <small>*indicates required field</small>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="dialog = false">
-            Close
+          <v-btn color="primary" text @click="cancel()">
+            Cancel
           </v-btn>
-          <v-btn color="blue darken-1" text @click="dialog = false">
-            Save
+          <v-btn color="success" text @click="save()">
+            <v-icon left> mdi-content-save </v-icon>Save
           </v-btn>
         </v-card-actions>
+      </v-card>
+      <v-card class="mt-6">
+        <v-container>
+          <v-row>
+            <v-col>
+              <pre>{{ cachedContact }}</pre>
+            </v-col>
+          </v-row>
+        </v-container>
       </v-card>
     </v-dialog>
   </div>
@@ -93,10 +79,6 @@
 export default {
   name: "contact-edit",
   props: {
-    open: {
-      type: Boolean,
-      default: false,
-    },
     contact: Object,
     color: {
       type: String,
@@ -106,7 +88,24 @@ export default {
   data: () => {
     return {
       dialog: false,
+      cachedContact: {},
     };
+  },
+  created() {
+    this.setCachedContact();
+  },
+  methods: {
+    setCachedContact() {
+      this.cachedContact = JSON.parse(JSON.stringify(this.contact)); //dirty, but 'this.cachedContact = { ...this.contact };' doesn't worked
+    },
+    save() {
+      this.dialog = false;
+      this.$emit('saved', { contact: this.cachedContact });
+    },
+    cancel() {
+      this.dialog = false;
+      this.setCachedContact();
+    }
   },
 };
 </script>

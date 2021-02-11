@@ -2,8 +2,6 @@
   <div class="contact-card">
     <v-card v-if="!deleted" :id="'contact-card-' + contact.id" class="mb-3">
       <v-card-text>
-        <pre>{{ contact }}</pre>
-        <v-divider></v-divider>
         <v-list>
           <v-list-item two-line class="px-0">
             <v-list-item-avatar :color="randomColor">
@@ -12,7 +10,7 @@
                 :src="contact.img.src"
                 :alt="contact.name.full"
               />
-              <span v-else class="headline">{{ contact.name.short }}</span>
+              <span v-else class="text-h6">{{ contact.name.short }}</span>
             </v-list-item-avatar>
 
             <v-list-item-content>
@@ -25,14 +23,13 @@
             </v-list-item-content>
           </v-list-item>
         </v-list>
+        <pre>
+          {{ contact }}
+        </pre>
       </v-card-text>
       <v-card-actions>
-        <v-btn color="primary" text @click="dialog = true">
-          <v-icon left>
-            mdi-pencil
-          </v-icon>
-          Edit
-        </v-btn>
+        <ContactEdit @saved="saveContact()" :open="dialog" :contact="contact" :color="randomColor" />
+
         <v-btn color="error" text @click="deleteContact()">
           <v-icon left>
             mdi-delete
@@ -41,8 +38,6 @@
         </v-btn>
       </v-card-actions>
     </v-card>
-
-    <ContactEdit :open="dialog" :contact="contact" :color="randomColor" />
 
     <v-snackbar v-model="snackbar.open" :timeout="snackbar.timeout">
       {{ snackbar.text }}
@@ -92,6 +87,9 @@ export default {
       this.snackbar.text = name + " deleted";
       this.snackbar.open = true;
     },
+    saveContact() {
+      alert('save');
+    }
   },
 };
 
