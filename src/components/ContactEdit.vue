@@ -100,7 +100,7 @@ export default {
     },
     save() {
       this.dialog = false;
-      this.$emit('saved', { contact: this.cachedContact });
+      this.$emit('saved', this.cachedContact);
     },
     cancel() {
       this.dialog = false;

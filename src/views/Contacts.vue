@@ -14,6 +14,9 @@
         v-for="(contact, index) in contacts"
         :key="index"
         :contact="contact"
+        :contactsIndex="index"
+        @saved="saveContact($event)"
+        @deleted="deleteContact($event)"
       />
     </v-col>
 
@@ -81,7 +84,7 @@ export default {
 
         // add to data db
         cards.forEach((card) => {
-          saveContact(this.formatContact(card));
+          addContact(this.formatContact(card));
         });
 
         // add to data compnent
@@ -172,6 +175,28 @@ export default {
         this.contacts = result;
       });
     },
+    deleteContact(contact) {
+      deleteContactDb(contact.id);
+
+      // show feedback
+      this.snackbar.text = contact.name.full + " deleted";
+      this.snackbar.open = true;
+    },
+    saveContact(updatedContact) {
+      saveContactDb(updatedContact);
+
+      // update contact in vue data
+      this.contacts[this.getContactIndex(updatedContact.id)] = updatedContact;
+
+      // show feedback
+      this.snackbar.text = updatedContact.name.full + " saved";
+      this.snackbar.open = true;
+    },
+    getContactIndex(id) {
+      return this.contacts.findIndex((element) => {
+        return element.id === id;
+      });
+    },
   },
   computed: {
     vCardContacts: function() {
@@ -199,11 +224,25 @@ async function initContactsDb() {
   });
 }
 
-async function saveContact(contact) {
+async function addContact(contact) {
   const db = await openDB("ContactReader", dbVersion);
 
   // add contact
   await db.add("contacts", contact);
+}
+
+async function deleteContactDb(id) {
+  const db = await openDB("ContactReader", dbVersion);
+
+  // delete entry
+  await db.delete("contacts", id);
+}
+
+async function saveContactDb(savedContact) {
+  const db = await openDB("ContactReader", dbVersion);
+
+  // update contact
+  await db.put("contacts", savedContact);
 }
 
 async function getContactsFromDb() {
