@@ -1,15 +1,13 @@
 <template>
   <div class="contact-edit">
     <v-btn color="primary" text @click="dialog = true">
-      <v-icon left>
-        mdi-pencil
-      </v-icon>
+      <v-icon left> mdi-pencil </v-icon>
       Edit
     </v-btn>
 
     <v-dialog v-model="dialog" max-width="600px" :fullscreen="isMobile">
       <v-card>
-        <v-toolbar v-if="isMobile" dark color="primary">
+        <v-toolbar v-if="isMobile">
           <v-btn icon @click="dialog = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
@@ -24,9 +22,7 @@
                   :src="cachedContact.img.src"
                   :alt="cachedContact.name.full"
                 />
-                <span v-else class="text-h4">{{
-                  cachedContact.name.short
-                }}</span>
+                <span v-else class="text-h4">{{ cachedContact.name.short }}</span>
               </v-avatar>
             </v-col>
             <v-col class="d-flex justify-center">
@@ -37,7 +33,13 @@
         <v-card-text>
           <v-container>
             <v-row>
-              <v-col cols="12" sm="6" md="5">
+              <v-col cols="4" sm="4" md="4">
+                <v-text-field
+                  label="Prefix"
+                  v-model="cachedContact.name.prefix"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="8" sm="8" md="8">
                 <v-text-field
                   label="Forename"
                   v-model="cachedContact.name.forename"
@@ -60,9 +62,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="primary" text @click="cancel()">
-            Cancel
-          </v-btn>
+          <v-btn color="primary" text @click="cancel()"> Cancel </v-btn>
           <v-btn color="success" text @click="save()">
             <v-icon left> mdi-content-save </v-icon>Save
           </v-btn>
@@ -95,10 +95,8 @@ export default {
     isMobile: () => {
       // show dialog as fullscreen for mobile screens
       return (
-        Math.max(
-          document.documentElement.clientHeight || 0,
-          window.innerHeight || 0
-        ) <= 960
+        Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0) <=
+        960
       );
     },
   },
