@@ -178,6 +178,9 @@ export default {
     deleteContact(contact) {
       deleteContactDb(contact.id);
 
+      // delete contact in vue data
+      this.contacts.splice(this.getContactIndex(contact.id), 1);
+
       // show feedback
       this.snackbar.text = contact.name.full + " deleted";
       this.snackbar.open = true;

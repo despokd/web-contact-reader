@@ -1,6 +1,6 @@
 <template>
   <div class="contact-card">
-    <v-card v-if="!deleted" :id="'contact-card-' + contact.id" class="mb-3">
+    <v-card :id="'contact-card-' + contact.id" class="mb-3">
       <v-card-text>
         <v-list>
           <v-list-item two-line class="px-0">
@@ -59,17 +59,15 @@ export default {
   data: () => {
     return {
       dialog: false,
-      deleted: false,
       randomColor: "#" + ((Math.random() * 0xffffff) << 0).toString(16),
     };
   },
   methods: {
     deleteContact() {
-      this.deleted = true;
-      this.$emit('deleted', this.contact);
+      this.$emit("deleted", this.contact);
     },
     saveContact(savedContact) {
-      this.$emit('saved', savedContact);
+      this.$emit("saved", savedContact);
     },
   },
 };
