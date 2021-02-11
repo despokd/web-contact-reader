@@ -23,12 +23,7 @@
     <v-snackbar v-model="snackbar.open" :timeout="snackbar.timeout">
       {{ snackbar.text }}
       <template v-slot:action="{ attrs }">
-        <v-btn
-          text
-          color="primary"
-          v-bind="attrs"
-          @click="snackbar.open = false"
-        >
+        <v-btn text color="primary" v-bind="attrs" @click="snackbar.open = false">
           Close
         </v-btn>
       </template>
@@ -61,7 +56,7 @@ export default {
     this.getContacts();
   },
   methods: {
-    importVcf: function(event) {
+    importVcf: function (event) {
       // Browser is not compatible
       if (!window.FileReader) {
         this.snackbar.text = "Browser is not compatible";
@@ -92,7 +87,7 @@ export default {
       };
       fr.readAsText(event);
     },
-    formatContact: function(card) {
+    formatContact: function (card) {
       let contactObject = {
         name: {
           full: "",
@@ -101,7 +96,7 @@ export default {
           forename: "",
           middlenames: "",
           surname: "",
-          sufix: "",
+          suffix: "",
         },
         org: [],
         title: [],
@@ -124,18 +119,28 @@ export default {
       contactObject.name.forename = name[1] !== undefined ? name[1] : "";
       contactObject.name.middlenames = name[2] !== undefined ? name[2] : "";
       contactObject.name.surname = name[0] !== undefined ? name[0] : "";
-      contactObject.name.sufix = name[4] !== undefined ? name[4] : "";
+      contactObject.name.suffix = name[4] !== undefined ? name[4] : "";
 
-      // get full name
-      contactObject.name.full =
-        this.getFieldData(card.get("fn")) !== []
-          ? this.getFieldData(card.get("fn"))[0]
-          : contactObject.name.forename + " " + contactObject.name.surname;
+      // get full name (dirty)
+      if (this.getFieldData(card.get("fn")) !== []) {
+        contactObject.name.full = this.getFieldData(card.get("fn"))[0];
+      } else {
+        contactObject.name.full = "";
+        if (contactObject.name.prefix != "")
+          contactObject.name.full += contactObject.name.prefix + " ";
+        if (contactObject.name.forename != "")
+          contactObject.name.full += contactObject.name.forename + " ";
+        if (contactObject.name.middlenames != "")
+          contactObject.name.full += contactObject.name.middlenames + " ";
+        if (contactObject.name.surname != "")
+          contactObject.name.full += contactObject.name.surname + " ";
+        if (contactObject.name.suffix != "")
+          contactObject.name.full += ", " + contactObject.name.suffix;
+      }
 
       // get short name
       contactObject.name.short =
-        contactObject.name.forename.charAt(0) +
-        contactObject.name.surname.charAt(0);
+        contactObject.name.forename.charAt(0) + contactObject.name.surname.charAt(0);
 
       return contactObject;
     },
@@ -166,10 +171,10 @@ export default {
       // return string in array
       return dataArr;
     },
-    getDefaultField: function() {
+    getDefaultField: function () {
       return (field) => this.getFieldData(this.contact.get(field));
     },
-    getContacts: function() {
+    getContacts: function () {
       // get entries of database
       getContactsFromDb().then((result) => {
         this.contacts = result;
@@ -202,7 +207,7 @@ export default {
     },
   },
   computed: {
-    vCardContacts: function() {
+    vCardContacts: function () {
       let vCard = require("vcf");
       let returnArray = new Array();
       this.contacts.forEach((contact) => {
@@ -274,12 +279,10 @@ function quoted_printable_decode(str) {
     RFC2045Decode2IN = /=([0-9A-F]{2})/gim,
     // the RFC states against decoding lower case encodings, but following apparent PHP behavior
     // RFC2045Decode2IN = /=([0-9A-F]{2})/gm,
-    RFC2045Decode2OUT = function(sMatch, sHex) {
+    RFC2045Decode2OUT = function (sMatch, sHex) {
       return String.fromCharCode(parseInt(sHex, 16));
     };
-  return str
-    .replace(RFC2045Decode1, "")
-    .replace(RFC2045Decode2IN, RFC2045Decode2OUT);
+  return str.replace(RFC2045Decode1, "").replace(RFC2045Decode2IN, RFC2045Decode2OUT);
 }
 
 function utf8_decode(str_data) {

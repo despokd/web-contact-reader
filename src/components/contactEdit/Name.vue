@@ -1,0 +1,89 @@
+<template>
+  <div class="contact-edit-name">
+    <v-row>
+      <v-col cols="1">
+        <SectionIcon section="Name" icon="mdi-account" />
+      </v-col>
+      <v-col cols="10">
+        <v-container v-if="!isExpanded">
+          <v-row
+            ><v-col cols="5">
+              <v-text-field dense label="Forename" v-model="name.forename"></v-text-field>
+            </v-col>
+            <v-col cols="7">
+              <v-text-field
+                dense
+                label="Surname"
+                v-model="name.surname"
+              ></v-text-field> </v-col
+          ></v-row>
+        </v-container>
+        <v-container v-else>
+          <v-row>
+            <v-col cols="12" sm="4" md="4">
+              <v-text-field dense label="Prefix" v-model="name.prefix"></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="8" md="8">
+              <v-text-field dense label="Forename" v-model="name.forename"></v-text-field>
+            </v-col>
+            <v-col cols="12">
+              <v-text-field
+                dense
+                label="Middle names"
+                v-model="name.middlenames"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="8" md="8">
+              <v-text-field dense label="Surname" v-model="name.surname"></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="4" md="4">
+              <v-text-field dense label="Suffix" v-model="name.suffix"></v-text-field>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-col>
+      <v-col cols="1">
+        <v-icon @click="toggleExpansion()" class="mt-5 ml-n3">
+          {{ isExpanded ? "mdi-chevron-down" : "mdi-chevron-left" }}
+        </v-icon>
+      </v-col>
+    </v-row>
+  </div>
+</template>
+
+<script>
+import SectionIcon from "@/components/contactEdit/helper/SectionIcon.vue";
+
+export default {
+  name: "contact-edit-name",
+  props: {
+    name: Object,
+  },
+  components: {
+    SectionIcon,
+  },
+  data: () => {
+    return {
+      isExpanded: false,
+    };
+  },
+  mounted() {
+    // get full name
+    // TODO reactivity  + saving doesn't work
+    this.name.full = "";
+    if (this.name.prefix != "") this.name.full += this.name.prefix + " ";
+    if (this.name.forename != "") this.name.full += this.name.forename + " ";
+    if (this.name.middlenames != "") this.name.full += this.name.middlenames + " ";
+    if (this.name.surname != "") this.name.full += this.name.surname;
+    if (this.name.suffix != "") this.name.full += ", " + this.name.suffix;
+
+    // get short name
+    this.name.short = this.name.forename.charAt(0) + this.name.surname.charAt(0);
+  },
+  methods: {
+    toggleExpansion() {
+      this.isExpanded = !this.isExpanded;
+    },
+  },
+};
+</script>

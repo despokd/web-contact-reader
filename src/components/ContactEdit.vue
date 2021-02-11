@@ -12,7 +12,12 @@
             <v-icon>mdi-close</v-icon>
           </v-btn>
           <v-toolbar-title>{{ cachedContact.name.full }}</v-toolbar-title>
+          <v-spacer> </v-spacer>
+          <v-btn text @click="save()">
+            <v-icon left> mdi-content-save </v-icon>Save
+          </v-btn>
         </v-toolbar>
+
         <v-card-title>
           <v-row justify="center">
             <v-col cols="12" class="d-flex justify-center">
@@ -30,40 +35,17 @@
             </v-col>
           </v-row>
         </v-card-title>
+
         <v-card-text>
-          <v-container>
-            <v-row>
-              <v-col cols="4" sm="4" md="4">
-                <v-text-field
-                  label="Prefix"
-                  v-model="cachedContact.name.prefix"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="8" sm="8" md="8">
-                <v-text-field
-                  label="Forename"
-                  v-model="cachedContact.name.forename"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="7">
-                <v-text-field
-                  label="Middle names"
-                  v-model="cachedContact.name.middlenames"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field
-                  label="Surname"
-                  v-model="cachedContact.name.surname"
-                ></v-text-field>
-              </v-col>
-            </v-row>
-          </v-container>
+          <v-sheet :color="sections.color" :rounded="sections.rounded">
+            <EditName :name="cachedContact.name" />
+          </v-sheet>
         </v-card-text>
-        <v-card-actions>
+
+        <v-card-actions v-if="!isMobile">
           <v-spacer></v-spacer>
           <v-btn color="primary" text @click="cancel()"> Cancel </v-btn>
-          <v-btn color="success" text @click="save()">
+          <v-btn color="primary" @click="save()">
             <v-icon left> mdi-content-save </v-icon>Save
           </v-btn>
         </v-card-actions>
@@ -73,8 +55,13 @@
 </template>
 
 <script>
+import EditName from "@/components/contactEdit/Name.vue";
+
 export default {
   name: "contact-edit",
+  components: {
+    EditName,
+  },
   props: {
     contact: Object,
     color: {
@@ -86,6 +73,10 @@ export default {
     return {
       dialog: false,
       cachedContact: {},
+      sections: {
+        rounded: true,
+        color: "darken",
+      },
     };
   },
   created() {
