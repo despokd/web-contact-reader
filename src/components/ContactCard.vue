@@ -1,6 +1,6 @@
 <template>
   <div class="contact-card">
-    <v-card :id="'contact-card-' + contact.id" class="mb-3">
+    <v-card class="mb-3">
       <v-card-text>
         <v-list>
           <v-list-item two-line class="px-0">
@@ -23,9 +23,6 @@
             </v-list-item-content>
           </v-list-item>
         </v-list>
-        <pre>
-          {{ contact }}
-        </pre>
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>

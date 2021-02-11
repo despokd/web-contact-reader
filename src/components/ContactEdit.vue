@@ -7,8 +7,14 @@
       Edit
     </v-btn>
 
-    <v-dialog v-model="dialog" max-width="600px">
+    <v-dialog v-model="dialog" max-width="600px" :fullscreen="isMobile">
       <v-card>
+        <v-toolbar v-if="isMobile" dark color="primary">
+          <v-btn icon @click="dialog = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-toolbar-title>{{ cachedContact.name.full }}</v-toolbar-title>
+        </v-toolbar>
         <v-card-title>
           <v-row justify="center">
             <v-col cols="12" class="d-flex justify-center">
@@ -62,15 +68,6 @@
           </v-btn>
         </v-card-actions>
       </v-card>
-      <v-card class="mt-6">
-        <v-container>
-          <v-row>
-            <v-col>
-              <pre>{{ cachedContact }}</pre>
-            </v-col>
-          </v-row>
-        </v-container>
-      </v-card>
     </v-dialog>
   </div>
 </template>
@@ -94,18 +91,29 @@ export default {
   created() {
     this.setCachedContact();
   },
+  computed: {
+    isMobile: () => {
+      // show dialog as fullscreen for mobile screens
+      return (
+        Math.max(
+          document.documentElement.clientHeight || 0,
+          window.innerHeight || 0
+        ) <= 960
+      );
+    },
+  },
   methods: {
     setCachedContact() {
-      this.cachedContact = JSON.parse(JSON.stringify(this.contact)); //dirty, but 'this.cachedContact = { ...this.contact };' doesn't worked
+      this.cachedContact = JSON.parse(JSON.stringify(this.contact)); // dirty, but 'this.cachedContact = { ...this.contact };' doesn't worked for cloning
     },
     save() {
       this.dialog = false;
-      this.$emit('saved', this.cachedContact);
+      this.$emit("saved", this.cachedContact);
     },
     cancel() {
       this.dialog = false;
       this.setCachedContact();
-    }
+    },
   },
 };
 </script>
