@@ -50,6 +50,16 @@ export default {
       },
     };
   },
+  computed: {
+    vCardContacts: function () {
+      let vCard = require("vcf");
+      let returnArray = new Array();
+      this.contacts.forEach((contact) => {
+        returnArray.push(vCard.fromJSON(contact));
+      });
+      return returnArray;
+    },
+  },
   created() {
     initContactsDb();
     this.getContacts();
@@ -99,10 +109,7 @@ export default {
         },
         org: [],
         title: [],
-        img: {
-          hasImg: false,
-          src: "",
-        },
+        img: {},
         tel: [],
         email: [],
         adress: [],
@@ -194,16 +201,6 @@ export default {
       return this.contacts.findIndex((element) => {
         return element.id === id;
       });
-    },
-  },
-  computed: {
-    vCardContacts: function () {
-      let vCard = require("vcf");
-      let returnArray = new Array();
-      this.contacts.forEach((contact) => {
-        returnArray.push(vCard.fromJSON(contact));
-      });
-      return returnArray;
     },
   },
 };

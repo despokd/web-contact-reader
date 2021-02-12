@@ -23,8 +23,8 @@
             <v-col cols="12" class="d-flex justify-center">
               <v-avatar :color="color" size="100" class="mt-6">
                 <img
-                  v-if="cachedContact.img.hasImg"
-                  :src="cachedContact.img.src"
+                  v-if="Object.keys(cachedContact.img).length !== 0"
+                  :src="imgSrc"
                   :alt="cachedContact.name.full"
                 />
                 <span v-else class="text-h4">{{ cachedContact.name.short }}</span>
@@ -91,6 +91,9 @@ export default {
         Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0) <=
         960
       );
+    },
+    imgSrc: () => {
+      return "";
     },
   },
   methods: {
