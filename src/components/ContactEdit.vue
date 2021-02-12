@@ -5,7 +5,7 @@
       Edit
     </v-btn>
 
-    <v-dialog v-model="dialog" max-width="600px" :fullscreen="isMobile">
+    <v-dialog v-model="dialog" max-width="500px" :fullscreen="isMobile">
       <v-card>
         <v-toolbar v-if="isMobile">
           <v-btn icon @click="dialog = false">
@@ -37,9 +37,9 @@
         </v-card-title>
 
         <v-card-text>
-          <v-sheet :color="sections.color" :rounded="sections.rounded">
-            <EditName :name="cachedContact.name" />
-          </v-sheet>
+          <EditName :name="cachedContact.name" />
+          <v-divider class="mb-5"></v-divider>
+          <EditTel :tel="cachedContact.tel" />
         </v-card-text>
 
         <v-card-actions v-if="!isMobile">
@@ -56,11 +56,13 @@
 
 <script>
 import EditName from "@/components/contactEdit/Name.vue";
+import EditTel from "@/components/contactEdit/Tel.vue";
 
 export default {
   name: "contact-edit",
   components: {
     EditName,
+    EditTel,
   },
   props: {
     contact: Object,

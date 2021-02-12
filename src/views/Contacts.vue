@@ -14,7 +14,6 @@
         v-for="(contact, index) in contacts"
         :key="index"
         :contact="contact"
-        :contactsIndex="index"
         @saved="saveContact($event)"
         @deleted="deleteContact($event)"
       />
@@ -142,17 +141,43 @@ export default {
       contactObject.name.short =
         contactObject.name.forename.charAt(0) + contactObject.name.surname.charAt(0);
 
+      // get tel numbers
+      let tel = card.get("tel");
+      if (tel !== undefined) {
+        // check for array (from vCard OBJECT)
+        if (card.get("tel")[0] == undefined) {
+          contactObject.tel.push({
+            type: tel.type,
+            number: this.getFieldData(tel)[0],
+          });
+        } else {
+          tel.forEach((number) => {
+            contactObject.tel.push({
+              type: number.type,
+              number: this.getFieldData(number)[0],
+            });
+          });
+        }
+      }
+
+      console.debug(contactObject);
       return contactObject;
     },
     getFieldData: (field) => {
       if (field == undefined) return [];
-      let dataStr = field._data;
-      if (dataStr == undefined) return [];
+      let dataArr;
 
-      // delete line breaks from file
-      dataStr = dataStr.replace(/\r?\n|\r/g, "");
-
-      let dataArr = dataStr.split(";");
+      // convert to array if string
+      if (field.isArray) {
+        dataArr = field;
+      } else {
+        let dataStr = field._data;
+        if (dataStr == undefined) return [];
+        // delete line breaks from file
+        dataStr = dataStr.replace(/\r?\n|\r/g, "");
+        // create array
+        dataArr = dataStr.split(";");
+      }
 
       // decode quoted printables
       if ("charset" in field) {
@@ -181,21 +206,19 @@ export default {
       });
     },
     deleteContact(contact) {
+      // delete contact in db
       deleteContactDb(contact.id);
-
       // delete contact in vue data
       this.contacts.splice(this.getContactIndex(contact.id), 1);
-
       // show feedback
       this.snackbar.text = contact.name.full + " deleted";
       this.snackbar.open = true;
     },
     saveContact(updatedContact) {
+      // update contact in vue data
       saveContactDb(updatedContact);
-
       // update contact in vue data
       this.contacts[this.getContactIndex(updatedContact.id)] = updatedContact;
-
       // show feedback
       this.snackbar.text = updatedContact.name.full + " saved";
       this.snackbar.open = true;

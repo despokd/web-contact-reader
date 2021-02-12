@@ -16,13 +16,12 @@
             <v-list-item-content>
               <v-list-item-title>{{ contact.name.full }}</v-list-item-title>
               <v-list-item-subtitle>
-                <span v-for="(item, index) in contact.org" :key="index">{{
-                  item
-                }}</span>
+                <span v-for="(item, index) in contact.org" :key="index">{{ item }}</span>
               </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
         </v-list>
+        {{ contact.tel }}
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
@@ -34,9 +33,7 @@
         />
 
         <v-btn color="error" text @click="deleteContact()">
-          <v-icon left>
-            mdi-delete
-          </v-icon>
+          <v-icon left> mdi-delete </v-icon>
           Delete
         </v-btn>
       </v-card-actions>

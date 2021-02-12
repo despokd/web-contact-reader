@@ -43,9 +43,14 @@
         </v-container>
       </v-col>
       <v-col cols="1">
-        <v-icon @click="toggleExpansion()" class="mt-5 ml-n3">
-          {{ isExpanded ? "mdi-chevron-down" : "mdi-chevron-left" }}
-        </v-icon>
+        <v-btn
+          icon
+          aria-label="Toggle detailed name form"
+          @click="toggleExpansion()"
+          class="mt-5 ml-n3"
+        >
+          <v-icon>{{ isExpanded ? "mdi-chevron-down" : "mdi-chevron-left" }}</v-icon>
+        </v-btn>
       </v-col>
     </v-row>
   </div>
