@@ -13,7 +13,7 @@
           </v-btn>
           <v-toolbar-title>{{ cachedContact.name.full }}</v-toolbar-title>
           <v-spacer> </v-spacer>
-          <v-btn text @click="save()">
+          <v-btn color="primary" text @click="save()">
             <v-icon left> mdi-content-save </v-icon>Save
           </v-btn>
         </v-toolbar>
