@@ -21,6 +21,7 @@
             </v-list-item-content>
           </v-list-item>
         </v-list>
+        {{ contact.tel[0] !== undefined ? contact.tel[0].number : "" }}
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
@@ -30,7 +31,6 @@
           :contact="contact"
           :color="randomColor"
         />
-
         <v-btn color="error" text @click="deleteContact()">
           <v-icon left> mdi-delete </v-icon>
           Delete
