@@ -166,9 +166,6 @@ export default {
       console.debug(contactObject);
       return contactObject;
     },
-    getDefaultField: function () {
-      return (field) => getFieldData(this.contact.get(field));
-    },
     getContacts: function () {
       // get entries of database
       getContactsFromDb().then((result) => {
