@@ -5,11 +5,6 @@
 - Show instantly data
 - use table view, with pagination, sorting, searching, details on click
 - Use card view
-
-## TODO
-- Fix navigation drawer 'home' always active
-- Setup manifest and `<head>` properly
-
 ## Project setup
 ```
 npm install
