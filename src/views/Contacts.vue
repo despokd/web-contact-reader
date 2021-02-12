@@ -113,7 +113,7 @@ export default {
       console.debug(card);
 
       // set name
-      let name = this.getFieldData(card.get("n"));
+      let name = getFieldData(card.get("n"));
       contactObject.name.prefix = name[3] !== undefined ? name[3] : "";
       contactObject.name.forename = name[1] !== undefined ? name[1] : "";
       contactObject.name.middlenames = name[2] !== undefined ? name[2] : "";
@@ -121,8 +121,8 @@ export default {
       contactObject.name.suffix = name[4] !== undefined ? name[4] : "";
 
       // get full name (dirty)
-      if (this.getFieldData(card.get("fn")) !== []) {
-        contactObject.name.full = this.getFieldData(card.get("fn"))[0];
+      if (getFieldData(card.get("fn")) !== []) {
+        contactObject.name.full = getFieldData(card.get("fn"))[0];
       } else {
         contactObject.name.full = "";
         if (contactObject.name.prefix != "")
@@ -148,56 +148,26 @@ export default {
         if (card.get("tel")[0] == undefined) {
           contactObject.tel.push({
             type: tel.type,
-            number: this.getFieldData(tel)[0],
+            number: getFieldData(tel)[0],
           });
         } else {
           tel.forEach((number) => {
             contactObject.tel.push({
               type: number.type,
-              number: this.getFieldData(number)[0],
+              number: getFieldData(number)[0],
             });
           });
         }
       }
 
+      // get image
+      contactObject.img = getFieldData();
+
       console.debug(contactObject);
       return contactObject;
     },
-    getFieldData: (field) => {
-      if (field == undefined) return [];
-      let dataArr;
-
-      // convert to array if string
-      if (field.isArray) {
-        dataArr = field;
-      } else {
-        let dataStr = field._data;
-        if (dataStr == undefined) return [];
-        // delete line breaks from file
-        dataStr = dataStr.replace(/\r?\n|\r/g, "");
-        // create array
-        dataArr = dataStr.split(";");
-      }
-
-      // decode quoted printables
-      if ("charset" in field) {
-        switch (field.charset) {
-          case "UTF-8":
-            dataArr.forEach((string, index) => {
-              let decodedStr = utf8_decode(quoted_printable_decode(string));
-              dataArr[index] = decodedStr.replace(/=$/, "..."); // add ellipsis, when string not long enough and end with =
-            });
-            break;
-          default:
-            dataArr[0] = "error";
-        }
-      }
-
-      // return string in array
-      return dataArr;
-    },
     getDefaultField: function () {
-      return (field) => this.getFieldData(this.contact.get(field));
+      return (field) => getFieldData(this.contact.get(field));
     },
     getContacts: function () {
       // get entries of database
@@ -279,6 +249,40 @@ async function saveContactDb(savedContact) {
 async function getContactsFromDb() {
   const db = await openDB("ContactReader", dbVersion);
   return await db.getAll("contacts");
+}
+
+function getFieldData(field) {
+  if (field == undefined) return [];
+  let dataArr;
+
+  // convert to array if string
+  if (field.isArray) {
+    dataArr = field;
+  } else {
+    let dataStr = field._data;
+    if (dataStr == undefined) return [];
+    // delete line breaks from file
+    dataStr = dataStr.replace(/\r?\n|\r/g, "");
+    // create array
+    dataArr = dataStr.split(";");
+  }
+
+  // decode quoted printables
+  if ("charset" in field) {
+    switch (field.charset) {
+      case "UTF-8":
+        dataArr.forEach((string, index) => {
+          let decodedStr = utf8_decode(quoted_printable_decode(string));
+          dataArr[index] = decodedStr.replace(/=$/, "..."); // add ellipsis, when string not long enough and end with =
+        });
+        break;
+      default:
+        dataArr[0] = "error";
+    }
+  }
+
+  // return string in array
+  return dataArr;
 }
 
 function quoted_printable_decode(str) {
