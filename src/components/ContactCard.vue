@@ -21,7 +21,6 @@
             </v-list-item-content>
           </v-list-item>
         </v-list>
-        {{ contact.tel }}
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
