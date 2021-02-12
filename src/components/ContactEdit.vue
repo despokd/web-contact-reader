@@ -27,7 +27,9 @@
                   :src="imgSrc"
                   :alt="cachedContact.name.full"
                 />
-                <span v-else class="text-h4">{{ cachedContact.name.short }}</span>
+                <span v-else class="text-h4 white--text">{{
+                  cachedContact.name.short
+                }}</span>
               </v-avatar>
             </v-col>
             <v-col class="d-flex justify-center">

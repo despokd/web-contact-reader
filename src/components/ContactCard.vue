@@ -5,8 +5,12 @@
         <v-list>
           <v-list-item two-line class="px-0">
             <v-list-item-avatar :color="randomColor">
-              <img v-if="contact.img" :src="contact.img.src" :alt="contact.name.full" />
-              <span v-else class="text-h6">{{ contact.name.short }}</span>
+              <img
+                v-if="Object.keys(contact.img).length !== 0"
+                :src="contact.img"
+                :alt="contact.name.full"
+              />
+              <span v-else class="text-h6 white--text">{{ contact.name.short }}</span>
             </v-list-item-avatar>
 
             <v-list-item-content>
