@@ -39,6 +39,7 @@
         <template v-for="(telItem, index) in tel">
           <div :key="index">
             <v-btn
+              color="error"
               icon
               aria-label="Delete number"
               @click="deleteTel(index)"
@@ -46,7 +47,6 @@
             >
               <v-icon small>mdi-delete</v-icon>
             </v-btn>
-            <v-spacer class="mb-16 mb-sm-0"></v-spacer>
           </div>
         </template>
       </v-col>
