@@ -6,8 +6,8 @@
           <v-list-item two-line class="px-0">
             <v-list-item-avatar :color="randomColor">
               <img
-                v-if="Object.keys(contact.img).length !== 0"
-                :src="contact.img"
+                v-if="contact.img.length !== 0"
+                :src="this.img.src"
                 :alt="contact.name.full"
               />
               <span v-else class="text-h6 white--text">{{ contact.name.short }}</span>
@@ -16,12 +16,15 @@
             <v-list-item-content>
               <v-list-item-title>{{ contact.name.full }}</v-list-item-title>
               <v-list-item-subtitle>
-                <span v-for="(item, index) in contact.org" :key="index">{{ item }}</span>
+                <span v-for="(item, index) in contact.org" :key="index">{{
+                  item._data
+                }}</span>
               </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
         </v-list>
-        {{ contact.tel[0] !== undefined ? contact.tel[0].number : "" }}
+        {{ contact.tel.length > 0 ? contact.tel[0].number : "" }}
+        <pre>{{ contact }}</pre>
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
@@ -54,6 +57,11 @@ export default {
       dialog: false,
       randomColor: "#" + ((Math.random() * 0xffffff) << 0).toString(16),
     };
+  },
+  computed: {
+    img: function () {
+      return this.contact.img.slice(-1).pop();
+    },
   },
   methods: {
     deleteContact() {

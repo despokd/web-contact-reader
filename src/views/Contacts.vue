@@ -1,23 +1,30 @@
 <template>
   <div class="contacts">
-    <v-col cols="12">
-      <template>
-        <v-file-input
-          accept=".vcf"
-          label="Import .vcf-file"
-          @change="importVcf($event)"
-        ></v-file-input>
-      </template>
-    </v-col>
-    <v-col cols="12">
-      <ContactCard
-        v-for="(contact, index) in contacts"
-        :key="index"
-        :contact="contact"
-        @saved="saveContact($event)"
-        @deleted="deleteContact($event)"
-      />
-    </v-col>
+    <v-row>
+      <v-col cols="8">
+        <template>
+          <v-file-input
+            accept=".vcf"
+            label="Import .vcf-file"
+            @change="importVcf($event)"
+          ></v-file-input>
+        </template>
+      </v-col>
+      <v-col cols="4">
+        <v-btn class="mt-4" block text color="error" @click="deleteAllContacts()">
+          Delete all
+        </v-btn>
+      </v-col>
+      <v-col cols="12">
+        <ContactCard
+          v-for="contact in contacts"
+          :key="contact.id"
+          :contact="contact"
+          @saved="saveContact($event)"
+          @deleted="deleteContact($event)"
+        />
+      </v-col>
+    </v-row>
 
     <v-snackbar v-model="snackbar.open" :timeout="snackbar.timeout">
       {{ snackbar.text }}
@@ -42,7 +49,6 @@ export default {
   data: () => {
     return {
       contacts: [],
-      tempContacts: [],
       snackbar: {
         text: "Error",
         timeout: "3000",
@@ -74,7 +80,7 @@ export default {
       }
 
       // discard if no files given
-      if (event.length <= 0) {
+      if (event == null || event == undefined || event.length <= 0) {
         this.snackbar.text = "No files given";
         this.snackbar.open = true;
         return;
@@ -88,7 +94,8 @@ export default {
 
         // add to data db
         cards.forEach((card) => {
-          addContact(this.formatContact(card));
+          let cardObject = this.formatContact(card);
+          addContact(cardObject);
         });
 
         // add to data compnent
@@ -109,15 +116,13 @@ export default {
         },
         org: [],
         title: [],
-        img: {},
+        img: [],
         tel: [],
         email: [],
         adress: [],
         url: "",
         bday: "",
       };
-
-      console.debug(card);
 
       // set name
       let name = getFieldData(card.get("n"));
@@ -168,12 +173,42 @@ export default {
       }
 
       // get image
-      contactObject.img = getFieldData();
+      let img = card.get("photo");
+      if (img !== undefined) {
+        if (img[0] === undefined) {
+          // get single image
+          contactObject.img[0] = img;
+          contactObject.img[0].data = getFieldData(img)[0];
+          contactObject.img[0].src = this.generateImgSrc(img);
+        } else {
+          // handle multiple images
+          img.forEach((element) => {
+            let eleImg = element;
+            eleImg.data = getFieldData(element)[0];
+            eleImg.src = this.generateImgSrc(element);
 
-      console.debug(contactObject);
+            contactObject.img.push(eleImg);
+          });
+        }
+      }
+
       return contactObject;
     },
-    getContacts: function () {
+    generateImgSrc: (img) => {
+      let src = "https://i.pravatar.cc/300";
+      if (img !== undefined) {
+        if (img.encoding !== undefined) {
+          // base64
+          src = "data:image/" + img.type + ";base64," + img.data;
+        } else {
+          // url
+          src = img.data;
+        }
+      }
+
+      return src;
+    },
+    getContacts() {
       // get entries of database
       getContactsFromDb().then((result) => {
         this.contacts = result;
@@ -188,8 +223,17 @@ export default {
       this.snackbar.text = contact.name.full + " deleted";
       this.snackbar.open = true;
     },
+    deleteAllContacts() {
+      // delete contacts in db
+      deleteAllContactsDb();
+      // delete contacts in vue data
+      this.contacts = [];
+      // show feedback
+      this.snackbar.text = "All deleted";
+      this.snackbar.open = true;
+    },
     saveContact(updatedContact) {
-      // update contact in vue data
+      // update contact in db
       saveContactDb(updatedContact);
       // update contact in vue data
       this.contacts[this.getContactIndex(updatedContact.id)] = updatedContact;
@@ -206,7 +250,7 @@ export default {
 };
 
 // indexedDb version
-const dbVersion = 5;
+const dbVersion = 6;
 
 async function initContactsDb() {
   await openDB("ContactReader", dbVersion, {
@@ -231,6 +275,13 @@ async function deleteContactDb(id) {
 
   // delete entry
   await db.delete("contacts", id);
+}
+
+async function deleteAllContactsDb() {
+  const db = await openDB("ContactReader", dbVersion);
+
+  // delete all entries
+  await db.clear("contacts");
 }
 
 async function saveContactDb(savedContact) {

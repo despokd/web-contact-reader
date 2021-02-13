@@ -23,8 +23,8 @@
             <v-col cols="12" class="d-flex justify-center">
               <v-avatar :color="color" size="100" class="mt-6">
                 <img
-                  v-if="Object.keys(cachedContact.img).length !== 0"
-                  :src="imgSrc"
+                  v-if="cachedContact.img.length !== 0"
+                  :src="img.src"
                   :alt="cachedContact.name.full"
                 />
                 <span v-else class="text-h4 white--text">{{
@@ -94,8 +94,8 @@ export default {
         960
       );
     },
-    imgSrc: () => {
-      return "";
+    img: function () {
+      return this.contact.img.slice(-1).pop();
     },
   },
   methods: {
