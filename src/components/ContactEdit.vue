@@ -13,7 +13,7 @@
           </v-btn>
           <v-toolbar-title>{{ cachedContact.name.full }}</v-toolbar-title>
           <v-spacer> </v-spacer>
-          <v-btn color="primary" text @click="save()">
+          <v-btn color="primary" @click="save()">
             <v-icon left> mdi-content-save </v-icon>Save
           </v-btn>
         </v-toolbar>
@@ -30,14 +30,19 @@
           <EditEmail :email="cachedContact.email" />
         </v-card-text>
 
-        <v-card-actions v-if="!isMobile">
-          <v-btn color="error" text @click="deleteContact()">
+        <v-card-actions>
+          <v-btn
+            :block="isMobile"
+            color="error"
+            :text="!isMobile"
+            @click="deleteContact()"
+          >
             <v-icon left> mdi-delete </v-icon>
             Delete
           </v-btn>
-          <v-spacer></v-spacer>
-          <v-btn color="primary" text @click="cancel()"> Cancel </v-btn>
-          <v-btn color="primary" @click="save()">
+          <v-spacer v-if="!isMobile"></v-spacer>
+          <v-btn v-if="!isMobile" color="primary" text @click="cancel()"> Cancel </v-btn>
+          <v-btn v-if="!isMobile" color="primary" @click="save()">
             <v-icon left> mdi-content-save </v-icon>Save
           </v-btn>
         </v-card-actions>
