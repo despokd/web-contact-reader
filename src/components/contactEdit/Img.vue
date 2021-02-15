@@ -113,6 +113,7 @@ export default {
         {
           aspectRatio: 1 / 1,
           background: false,
+          viewMode: 3,
         }
       );
 
