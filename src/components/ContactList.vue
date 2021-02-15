@@ -1,5 +1,5 @@
 <template>
-  <div class="contact-card">
+  <div class="contact-list">
     <v-card class="mb-3">
       <v-card-text>
         <v-container fluid>
@@ -53,7 +53,7 @@
 import ContactEdit from "@/components/ContactEdit.vue";
 
 export default {
-  name: "contact-card",
+  name: "contact-list",
   props: ["contact"],
   components: {
     ContactEdit,

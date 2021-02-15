@@ -16,7 +16,7 @@
         </v-btn>
       </v-col>
       <v-col cols="12">
-        <ContactCard
+        <ContactList
           v-for="contact in contacts"
           :key="contact.id"
           :contact="contact"
@@ -38,13 +38,13 @@
 </template>
 
 <script>
-import ContactCard from "@/components/ContactCard.vue";
+import ContactList from "@/components/ContactList.vue";
 import { openDB } from "idb/with-async-ittr.js";
 
 export default {
   name: "contacts",
   components: {
-    ContactCard,
+    ContactList,
   },
   data: () => {
     return {
