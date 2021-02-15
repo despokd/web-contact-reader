@@ -28,7 +28,9 @@
         </v-badge>
       </v-col>
       <v-col cols="12" v-if="editImage" class="d-flex justify-center">
-        <v-btn text color="error" @click="removeAll()"> Remove </v-btn>
+        <v-btn v-if="img !== undefined" text color="error" @click="removeAll()">
+          Remove
+        </v-btn>
         <v-btn text color="primary" @click="uploadImage()">Add new</v-btn>
       </v-col>
       <v-col class="d-flex justify-center">
@@ -81,9 +83,10 @@
 
 .cropper-wrap {
   margin: auto;
-  max-width: 500px;
-  max-height: 500px;
-  min-height: 50vh;
+  max-width: 50vw;
+  max-height: 50vh;
+  height: 100%;
+  width: 100%;
 }
 
 .cropper-wrap img {
