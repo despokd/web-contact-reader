@@ -74,7 +74,7 @@ export default {
   data: () => {
     return {
       attr: [
-        { name: "Favorite", value: "pref" },
+        { name: "Default", value: "pref" },
         { name: "Phone", value: "cell" },
         { name: "Mobil", value: "x-mobil" },
         { name: "Voice", value: "voice" },

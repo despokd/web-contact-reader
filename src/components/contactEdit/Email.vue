@@ -70,7 +70,7 @@ export default {
   data: () => {
     return {
       attr: [
-        { name: "Favorite", value: "pref" },
+        { name: "Default", value: "pref" },
         { name: "Home", value: "home" },
         { name: "Work", value: "work" },
         { name: "Other", value: null },
