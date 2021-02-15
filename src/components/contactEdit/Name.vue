@@ -8,7 +8,12 @@
         <v-container v-if="!isExpanded">
           <v-row
             ><v-col cols="5">
-              <v-text-field dense label="Forename" v-model="name.forename"></v-text-field>
+              <v-text-field
+                dense
+                label="Forename"
+                v-model="name.forename"
+                @input="getNameCombinations()"
+              ></v-text-field>
             </v-col>
             <v-col cols="7">
               <v-text-field
@@ -21,23 +26,44 @@
         <v-container v-else>
           <v-row>
             <v-col cols="12" sm="4" md="4">
-              <v-text-field dense label="Prefix" v-model="name.prefix"></v-text-field>
+              <v-text-field
+                dense
+                label="Prefix"
+                v-model="name.prefix"
+                @input="getNameCombinations()"
+              ></v-text-field>
             </v-col>
             <v-col cols="12" sm="8" md="8">
-              <v-text-field dense label="Forename" v-model="name.forename"></v-text-field>
+              <v-text-field
+                dense
+                label="Forename"
+                v-model="name.forename"
+                @input="getNameCombinations()"
+              ></v-text-field>
             </v-col>
             <v-col cols="12">
               <v-text-field
                 dense
                 label="Middle names"
                 v-model="name.middlenames"
+                @input="getNameCombinations()"
               ></v-text-field>
             </v-col>
             <v-col cols="12" sm="8" md="8">
-              <v-text-field dense label="Surname" v-model="name.surname"></v-text-field>
+              <v-text-field
+                dense
+                label="Surname"
+                v-model="name.surname"
+                @input="getNameCombinations()"
+              ></v-text-field>
             </v-col>
             <v-col cols="12" sm="4" md="4">
-              <v-text-field dense label="Suffix" v-model="name.suffix"></v-text-field>
+              <v-text-field
+                dense
+                label="Suffix"
+                v-model="name.suffix"
+                @input="getNameCombinations()"
+              ></v-text-field>
             </v-col>
           </v-row>
         </v-container>
@@ -72,22 +98,21 @@ export default {
       isExpanded: false,
     };
   },
-  mounted() {
-    // get full name
-    // TODO reactivity  + saving doesn't work
-    this.name.full = "";
-    if (this.name.prefix != "") this.name.full += this.name.prefix + " ";
-    if (this.name.forename != "") this.name.full += this.name.forename + " ";
-    if (this.name.middlenames != "") this.name.full += this.name.middlenames + " ";
-    if (this.name.surname != "") this.name.full += this.name.surname;
-    if (this.name.suffix != "") this.name.full += ", " + this.name.suffix;
-
-    // get short name
-    this.name.short = this.name.forename.charAt(0) + this.name.surname.charAt(0);
-  },
   methods: {
     toggleExpansion() {
       this.isExpanded = !this.isExpanded;
+    },
+    getNameCombinations() {
+      // get full name
+      this.name.full = "";
+      if (this.name.prefix != "") this.name.full += this.name.prefix + " ";
+      if (this.name.forename != "") this.name.full += this.name.forename + " ";
+      if (this.name.middlenames != "") this.name.full += this.name.middlenames + " ";
+      if (this.name.surname != "") this.name.full += this.name.surname;
+      if (this.name.suffix != "") this.name.full += ", " + this.name.suffix;
+
+      // get short name
+      this.name.short = this.name.forename.charAt(0) + this.name.surname.charAt(0);
     },
   },
 };
