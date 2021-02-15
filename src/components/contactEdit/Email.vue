@@ -71,20 +71,16 @@ export default {
     return {
       attr: [
         { name: "Favorite", value: "pref" },
-        { name: "Phone", value: "cell" },
-        { name: "Mobil", value: "x-mobil" },
-        { name: "Voice", value: "voice" },
         { name: "Home", value: "home" },
         { name: "Work", value: "work" },
-        { name: "Fax", value: "fax" },
-        { name: "Pager", value: "pager" },
+        { name: "Other", value: null },
       ],
     };
   },
   methods: {
     addEmail() {
       this.email.push({
-        number: "",
+        email: "",
         type: ["cell"],
       });
     },

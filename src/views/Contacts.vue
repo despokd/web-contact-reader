@@ -143,6 +143,26 @@ export default {
       contactObj.name.short =
         contactObj.name.forename.charAt(0) + contactObj.name.surname.charAt(0);
 
+      // get image
+      let img = card.get("photo");
+      if (img !== undefined) {
+        if (img[0] === undefined) {
+          // get single image
+          contactObj.img[0] = img;
+          contactObj.img[0].data = getFieldData(img)[0];
+          contactObj.img[0].src = this.generateImgSrc(img);
+        } else {
+          // handle multiple images
+          img.forEach((element) => {
+            let eleImg = element;
+            eleImg.data = getFieldData(element)[0];
+            eleImg.src = this.generateImgSrc(element);
+
+            contactObj.img.push(eleImg);
+          });
+        }
+      }
+
       // get tel numbers
       let tel = card.get("tel");
       if (tel !== undefined) {
@@ -163,22 +183,22 @@ export default {
         }
       }
 
-      // get image
-      let img = card.get("photo");
-      if (img !== undefined) {
-        if (img[0] === undefined) {
-          // get single image
-          contactObj.img[0] = img;
-          contactObj.img[0].data = getFieldData(img)[0];
-          contactObj.img[0].src = this.generateImgSrc(img);
+      // get emails
+      let email = card.get("email");
+      if (email !== undefined) {
+        // check for array (from vCard OBJECT)
+        if (card.get("email")[0] == undefined) {
+          contactObj.email.push({
+            type: email.type,
+            email: getFieldData(email)[0],
+          });
         } else {
-          // handle multiple images
-          img.forEach((element) => {
-            let eleImg = element;
-            eleImg.data = getFieldData(element)[0];
-            eleImg.src = this.generateImgSrc(element);
-
-            contactObj.img.push(eleImg);
+          email.forEach((email) => {
+            if (!Array.isArray(email.type)) email.type = [email.type];
+            contactObj.email.push({
+              type: email.type,
+              email: getFieldData(email)[0],
+            });
           });
         }
       }
