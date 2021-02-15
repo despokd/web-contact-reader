@@ -81,7 +81,7 @@ export default {
     addEmail() {
       this.email.push({
         email: "",
-        type: ["cell"],
+        type: ["home"],
       });
     },
     deleteEmail(index) {
