@@ -24,9 +24,16 @@
           </v-list-item>
         </v-list>
         {{ contact.tel.length > 0 ? contact.tel[0].number : "" }}
-        <pre>{{ contact }}</pre>
       </v-card-text>
       <v-card-actions>
+        <v-expansion-panels>
+          <v-expansion-panel>
+            <v-expansion-panel-header> Debug </v-expansion-panel-header>
+            <v-expansion-panel-content>
+              <pre style="overflow-x: scroll">{{ contact }}</pre>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
         <v-spacer></v-spacer>
         <ContactEdit
           @saved="saveContact($event)"
