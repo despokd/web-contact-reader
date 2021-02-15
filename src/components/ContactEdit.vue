@@ -31,13 +31,8 @@
           <EditOrg :org="cachedContact.org" />
         </v-card-text>
 
-        <v-card-actions>
-          <v-btn
-            :block="isMobile"
-            color="error"
-            :text="!isMobile"
-            @click="deleteContact()"
-          >
+        <v-card-actions :class="[isMobile, 'pb-3 ']">
+          <v-btn color="error" text :block="isMobile" @click="deleteContact()">
             <v-icon left> mdi-delete </v-icon>
             Delete
           </v-btn>
