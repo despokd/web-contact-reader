@@ -105,7 +105,6 @@ export default {
           suffix: "",
         },
         org: [],
-        title: [],
         img: [],
         tel: [],
         email: [],
@@ -169,7 +168,7 @@ export default {
         // check for array (from vCard OBJECT)
         if (card.get("tel")[0] == undefined) {
           contactObj.tel.push({
-            type: tel.type,
+            type: [tel.type],
             number: getFieldData(tel)[0],
           });
         } else {
@@ -189,7 +188,7 @@ export default {
         // check for array (from vCard OBJECT)
         if (card.get("email")[0] == undefined) {
           contactObj.email.push({
-            type: email.type,
+            type: [email.type],
             email: getFieldData(email)[0],
           });
         } else {
@@ -198,6 +197,26 @@ export default {
             contactObj.email.push({
               type: email.type,
               email: getFieldData(email)[0],
+            });
+          });
+        }
+      }
+
+      //get organization
+      let org = card.get("org");
+      let title = card.get("title");
+      if (org !== undefined) {
+        // check for array (from vCard OBJECT)
+        if (card.get("org")[0] == undefined) {
+          contactObj.org.push({
+            org: getFieldData(org)[0],
+            title: title != undefined ? getFieldData(title)[0] : "",
+          });
+        } else {
+          org.forEach((org, index) => {
+            contactObj.email.push({
+              org: getFieldData(org)[0],
+              title: title != undefined ? getFieldData(title[index])[0] : "",
             });
           });
         }

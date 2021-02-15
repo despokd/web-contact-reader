@@ -16,9 +16,9 @@
             <v-list-item-content>
               <v-list-item-title>{{ contact.name.full }}</v-list-item-title>
               <v-list-item-subtitle>
-                <span v-for="(item, index) in contact.org" :key="index">{{
-                  item._data
-                }}</span>
+                <span v-for="(item, index) in contact.org" :key="index">
+                  {{ item.org }}{{ item.title !== "" ? ", " + item.title : "" }}
+                </span>
               </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>

@@ -26,6 +26,7 @@
           <EditName :name="cachedContact.name" />
           <EditTel :tel="cachedContact.tel" />
           <EditEmail :email="cachedContact.email" />
+          <EditOrg :org="cachedContact.org" />
         </v-card-text>
 
         <v-card-actions>
@@ -54,6 +55,7 @@ import EditImg from "@/components/contactEdit/Img.vue";
 import EditName from "@/components/contactEdit/Name.vue";
 import EditTel from "@/components/contactEdit/Tel.vue";
 import EditEmail from "@/components/contactEdit/Email.vue";
+import EditOrg from "@/components/contactEdit/Org.vue";
 
 export default {
   name: "contact-edit",
@@ -62,6 +64,7 @@ export default {
     EditName,
     EditTel,
     EditEmail,
+    EditOrg,
   },
   props: {
     contact: Object,
