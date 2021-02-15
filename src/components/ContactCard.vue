@@ -33,11 +33,8 @@
           :open="dialog"
           :contact="contact"
           :color="randomColor"
+          @deleted="deleteContact($event)"
         />
-        <v-btn color="error" text @click="deleteContact()">
-          <v-icon left> mdi-delete </v-icon>
-          Delete
-        </v-btn>
       </v-card-actions>
     </v-card>
   </div>

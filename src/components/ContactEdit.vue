@@ -36,6 +36,10 @@
         </v-card-text>
 
         <v-card-actions v-if="!isMobile">
+          <v-btn color="error" text @click="deleteContact()">
+            <v-icon left> mdi-delete </v-icon>
+            Delete
+          </v-btn>
           <v-spacer></v-spacer>
           <v-btn color="primary" text @click="cancel()"> Cancel </v-btn>
           <v-btn color="primary" @click="save()">
@@ -95,6 +99,10 @@ export default {
     cancel() {
       this.dialog = false;
       this.setCachedContact();
+    },
+    deleteContact() {
+      this.dialog = false;
+      this.$emit("deleted", this.contact);
     },
   },
 };
