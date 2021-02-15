@@ -24,9 +24,7 @@
 
         <v-card-text>
           <EditName :name="cachedContact.name" />
-          <v-divider class="mb-5"></v-divider>
           <EditTel :tel="cachedContact.tel" />
-          <v-divider class="mb-5"></v-divider>
           <EditEmail :email="cachedContact.email" />
         </v-card-text>
 

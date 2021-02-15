@@ -39,13 +39,7 @@
           </v-row>
           <v-row>
             <v-col>
-              <v-btn
-                color="primary"
-                small
-                @click="addTel()"
-                text
-                :class="[tel != undefined || tel.length() > 0 ? 'mt-1' : 'mt-n2']"
-              >
+              <v-btn color="primary" small @click="addTel()" text style="margin-top: 2px">
                 <v-icon left>mdi-plus</v-icon>
                 Add phone number
               </v-btn>

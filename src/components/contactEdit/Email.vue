@@ -40,7 +40,7 @@
                 small
                 @click="addEmail()"
                 text
-                :class="[email != undefined || email.length() > 0 ? 'mt-1' : 'mt-n2']"
+                style="margin-top: 2px"
               >
                 <v-icon left>mdi-plus</v-icon>
                 Add e-mail
