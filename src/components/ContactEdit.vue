@@ -26,6 +26,8 @@
           <EditName :name="cachedContact.name" />
           <v-divider class="mb-5"></v-divider>
           <EditTel :tel="cachedContact.tel" />
+          <v-divider class="mb-5"></v-divider>
+          <EditEmail :email="cachedContact.email" />
         </v-card-text>
 
         <v-card-actions v-if="!isMobile">
@@ -45,16 +47,18 @@
 </template>
 
 <script>
+import EditImg from "@/components/contactEdit/Img.vue";
 import EditName from "@/components/contactEdit/Name.vue";
 import EditTel from "@/components/contactEdit/Tel.vue";
-import EditImg from "@/components/contactEdit/Img.vue";
+import EditEmail from "@/components/contactEdit/Email.vue";
 
 export default {
   name: "contact-edit",
   components: {
+    EditImg,
     EditName,
     EditTel,
-    EditImg,
+    EditEmail,
   },
   props: {
     contact: Object,
