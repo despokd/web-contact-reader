@@ -4,7 +4,7 @@
       <v-col cols="1">
         <SectionIcon section="Phone" icon="mdi-phone" />
       </v-col>
-      <v-col cols="10">
+      <v-col cols="11">
         <v-container>
           <v-row v-for="(telItem, index) in tel" :key="index" class="mb-n6">
             <v-col cols="5">
@@ -18,12 +18,23 @@
                 label="Attributes"
               ></v-select>
             </v-col>
-            <v-col cols="7">
+            <v-col cols="6">
               <v-text-field
                 v-model="telItem.number"
                 dense
                 label="Phone number"
               ></v-text-field>
+            </v-col>
+            <v-col cols="1">
+              <v-btn
+                color="error"
+                icon
+                aria-label="Delete number"
+                @click="deleteTel(index)"
+                class="ml-n1"
+              >
+                <v-icon small>mdi-delete</v-icon>
+              </v-btn>
             </v-col>
           </v-row>
           <v-row>
@@ -35,21 +46,6 @@
             </v-col>
           </v-row>
         </v-container>
-      </v-col>
-      <v-col cols="1">
-        <template v-for="(telItem, index) in tel">
-          <div :key="index">
-            <v-btn
-              color="error"
-              icon
-              aria-label="Delete number"
-              @click="deleteTel(index)"
-              class="mt-3 ml-n3 mb-3"
-            >
-              <v-icon small>mdi-delete</v-icon>
-            </v-btn>
-          </div>
-        </template>
       </v-col>
     </v-row>
   </div>
