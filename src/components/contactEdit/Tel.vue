@@ -82,6 +82,7 @@ export default {
         { name: "Work", value: "work" },
         { name: "Fax", value: "fax" },
         { name: "Pager", value: "pager" },
+        { name: "Other", value: null },
       ],
     };
   },
