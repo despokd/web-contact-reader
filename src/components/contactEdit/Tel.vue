@@ -10,11 +10,12 @@
             <v-col cols="5">
               <v-select
                 v-model="telItem.type"
-                :items="types"
+                :items="attr"
                 item-text="name"
                 item-value="value"
+                multiple
                 dense
-                label="Type"
+                label="Attributes"
               ></v-select>
             </v-col>
             <v-col cols="7">
@@ -27,7 +28,7 @@
           </v-row>
           <v-row>
             <v-col>
-              <v-btn small @click="addTel()" text class="mt-1">
+              <v-btn color="primary" block small @click="addTel()" text class="mt-n2">
                 <v-icon left>mdi-plus</v-icon>
                 Add phone number
               </v-btn>
@@ -70,39 +71,15 @@ export default {
   },
   data: () => {
     return {
-      types: [
-        {
-          name: "Default",
-          value: "cell",
-        },
-        {
-          name: "Mobil",
-          value: "x-mobil",
-        },
-        {
-          name: "Home",
-          value: ["home", "voice"],
-        },
-        {
-          name: "Work",
-          value: "work",
-        },
-        {
-          name: "Fax Home",
-          value: ["home", "fax"],
-        },
-        {
-          name: "Fax Work",
-          value: ["work", "fax"],
-        },
-        {
-          name: "Pager",
-          value: "pager",
-        },
-        {
-          name: "Other",
-          value: "pref",
-        },
+      attr: [
+        { name: "Favorite", value: "pref" },
+        { name: "Phone", value: "cell" },
+        { name: "Mobil", value: "x-mobil" },
+        { name: "Voice", value: "voice" },
+        { name: "Home", value: "home" },
+        { name: "Work", value: "work" },
+        { name: "Fax", value: "fax" },
+        { name: "Pager", value: "pager" },
       ],
     };
   },
@@ -110,7 +87,7 @@ export default {
     addTel() {
       this.tel.push({
         number: "",
-        type: "cell",
+        type: ["cell"],
       });
     },
     deleteTel(index) {

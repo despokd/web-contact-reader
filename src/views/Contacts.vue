@@ -154,6 +154,7 @@ export default {
           });
         } else {
           tel.forEach((number) => {
+            if (!Array.isArray(number.type)) number.type = [number.type];
             contactObj.tel.push({
               type: number.type,
               number: getFieldData(number)[0],
