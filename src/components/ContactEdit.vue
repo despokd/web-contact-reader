@@ -1,8 +1,10 @@
 <template>
   <div class="contact-edit">
-    <v-btn color="primary" text @click="dialog = true">
-      <v-icon left> mdi-pencil </v-icon>
-      Edit
+    <v-btn icon text @click="dialog = true" aria-label="Edit contact">
+      <v-icon> mdi-pencil </v-icon>
+    </v-btn>
+    <v-btn icon text @click="deleteContact()" aria-label="Delete contact">
+      <v-icon> mdi-delete </v-icon>
     </v-btn>
 
     <v-dialog v-model="dialog" max-width="500px" :fullscreen="isMobile">

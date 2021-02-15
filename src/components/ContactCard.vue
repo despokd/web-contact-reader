@@ -2,47 +2,49 @@
   <div class="contact-card">
     <v-card class="mb-3">
       <v-card-text>
-        <v-list>
-          <v-list-item two-line class="px-0">
-            <v-list-item-avatar :color="randomColor">
-              <img
-                v-if="contact.img.length !== 0"
-                :src="this.img.src"
-                :alt="contact.name.full"
-              />
-              <span v-else class="text-h6 white--text">{{ contact.name.short }}</span>
-            </v-list-item-avatar>
+        <v-container fluid>
+          <v-row align="center">
+            <v-col cols="8" sm="4" class="d-flex align-center">
+              <div class="mr-3">
+                <v-avatar :color="randomColor">
+                  <img
+                    v-if="contact.img.length !== 0"
+                    :src="this.img.src"
+                    :alt="contact.name.full"
+                  />
+                  <span v-else class="text-h6 white--text">{{ contact.name.short }}</span>
+                </v-avatar>
+              </div>
 
-            <v-list-item-content>
-              <v-list-item-title>{{ contact.name.full }}</v-list-item-title>
-              <v-list-item-subtitle>
-                <span v-for="(item, index) in contact.org" :key="index">
+              <div>
+                <h2 class="text-body-1">{{ contact.name.full }}</h2>
+                <span
+                  v-for="(item, index) in contact.org"
+                  :key="index"
+                  class="text-subtitle-2 d-none d-sm-block"
+                >
                   {{ item.org }}{{ item.title !== "" ? ", " + item.title : "" }}
                 </span>
-              </v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list>
-        {{ contact.tel.length > 0 ? contact.tel[0].number : "" }}
+              </div>
+            </v-col>
+            <v-col cols="12" sm="3" class="d-none d-sm-flex">
+              {{ contact.tel.length > 0 ? contact.tel.slice(-1).pop().number : "" }}
+            </v-col>
+            <v-col cols="12" sm="3" class="d-none d-sm-flex">
+              {{ contact.email.length > 0 ? contact.email.slice(-1).pop().email : "" }}
+            </v-col>
+            <v-col cols="4" sm="2" align="right">
+              <ContactEdit
+                :open="dialog"
+                :contact="contact"
+                :color="randomColor"
+                @saved="saveContact($event)"
+                @deleted="deleteContact($event)"
+              />
+            </v-col>
+          </v-row>
+        </v-container>
       </v-card-text>
-      <v-card-actions>
-        <v-expansion-panels>
-          <v-expansion-panel>
-            <v-expansion-panel-header> Debug </v-expansion-panel-header>
-            <v-expansion-panel-content>
-              <pre style="overflow-x: scroll">{{ contact }}</pre>
-            </v-expansion-panel-content>
-          </v-expansion-panel>
-        </v-expansion-panels>
-        <v-spacer></v-spacer>
-        <ContactEdit
-          @saved="saveContact($event)"
-          :open="dialog"
-          :contact="contact"
-          :color="randomColor"
-          @deleted="deleteContact($event)"
-        />
-      </v-card-actions>
     </v-card>
   </div>
 </template>
