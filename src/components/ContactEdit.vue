@@ -19,14 +19,7 @@
         </v-toolbar>
 
         <v-card-title class="mt-6">
-          <v-row justify="center">
-            <v-col cols="12" class="d-flex justify-center">
-              <EditImg :contact="cachedContact" :color="color" />
-            </v-col>
-            <v-col class="d-flex justify-center">
-              <p>{{ cachedContact.name.full }}</p>
-            </v-col>
-          </v-row>
+          <EditImg :contact="cachedContact" :color="color" />
         </v-card-title>
 
         <v-card-text>

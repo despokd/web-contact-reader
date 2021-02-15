@@ -1,20 +1,41 @@
 <template>
-  <div class="contact-edit-img mt-3">
-    <v-badge
-      offset-x="30"
-      offset-y="20"
-      bordered
-      bottom
-      overlap
-      color="primary"
-      icon="mdi-pencil"
-      tabindex="1"
-    >
-      <v-avatar :color="color" size="100" class="editImage" @click="uploadImage()">
-        <img v-if="contact.img.length !== 0" :src="img.src" :alt="contact.name.full" />
-        <span v-else class="text-h4 white--text">{{ contact.name.short }}</span>
-      </v-avatar>
-    </v-badge>
+  <div class="contact-edit-img mt-3" style="width: 100%">
+    <v-row justify="center">
+      <v-col cols="12" class="d-flex justify-center">
+        <v-badge
+          offset-x="30"
+          offset-y="20"
+          bordered
+          bottom
+          overlap
+          color="primary"
+          icon="mdi-pencil"
+          tabindex="1"
+        >
+          <v-avatar
+            :color="color"
+            size="100"
+            class="editImage"
+            @click="editImage = !editImage"
+          >
+            <img
+              v-if="contact.img.length !== 0"
+              :src="img.src"
+              :alt="contact.name.full"
+            />
+            <span v-else class="text-h4 white--text">{{ contact.name.short }}</span>
+          </v-avatar>
+        </v-badge>
+      </v-col>
+      <v-col cols="12" v-if="editImage" class="d-flex justify-center">
+        <v-btn text color="error" @click="removeAll()"> Remove </v-btn>
+        <v-btn text color="primary" @click="uploadImage()">Add new</v-btn>
+      </v-col>
+      <v-col class="d-flex justify-center">
+        <p>{{ contact.name.full }}</p>
+      </v-col>
+    </v-row>
+
     <v-file-input
       :id="'contact-edit-img-' + contact.id"
       class="d-none"
@@ -91,6 +112,7 @@ export default {
   },
   data() {
     return {
+      editImage: false,
       openCropper: false,
       loading: true,
     };
@@ -104,6 +126,7 @@ export default {
   methods: {
     uploadImage() {
       document.getElementById("contact-edit-img-" + this.contact.id).click();
+      this.editImage = false;
       this.openCropper = true;
       this.loading = true;
     },
@@ -141,6 +164,10 @@ export default {
         type: "jpeg",
       });
       this.closeCropping();
+    },
+    removeAll() {
+      this.contact.img = [];
+      this.editImage = false;
     },
   },
 };
