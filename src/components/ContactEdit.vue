@@ -18,19 +18,10 @@
           </v-btn>
         </v-toolbar>
 
-        <v-card-title>
+        <v-card-title class="mt-6">
           <v-row justify="center">
             <v-col cols="12" class="d-flex justify-center">
-              <v-avatar :color="color" size="100" class="mt-6">
-                <img
-                  v-if="cachedContact.img.length !== 0"
-                  :src="img.src"
-                  :alt="cachedContact.name.full"
-                />
-                <span v-else class="text-h4 white--text">{{
-                  cachedContact.name.short
-                }}</span>
-              </v-avatar>
+              <EditImg :contact="cachedContact" :color="color" />
             </v-col>
             <v-col class="d-flex justify-center">
               <p>{{ cachedContact.name.full }}</p>
@@ -59,12 +50,14 @@
 <script>
 import EditName from "@/components/contactEdit/Name.vue";
 import EditTel from "@/components/contactEdit/Tel.vue";
+import EditImg from "@/components/contactEdit/Img.vue";
 
 export default {
   name: "contact-edit",
   components: {
     EditName,
     EditTel,
+    EditImg,
   },
   props: {
     contact: Object,
@@ -77,10 +70,6 @@ export default {
     return {
       dialog: false,
       cachedContact: {},
-      sections: {
-        rounded: true,
-        color: "darken",
-      },
     };
   },
   created() {
@@ -93,9 +82,6 @@ export default {
         Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0) <=
         960
       );
-    },
-    img: function () {
-      return this.contact.img.slice(-1).pop();
     },
   },
   methods: {

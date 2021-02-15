@@ -56,16 +56,6 @@ export default {
       },
     };
   },
-  computed: {
-    vCardContacts: function () {
-      let vCard = require("vcf");
-      let returnArray = new Array();
-      this.contacts.forEach((contact) => {
-        returnArray.push(vCard.fromJSON(contact));
-      });
-      return returnArray;
-    },
-  },
   created() {
     initContactsDb();
     this.getContacts();
