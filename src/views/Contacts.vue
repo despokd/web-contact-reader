@@ -94,7 +94,7 @@ export default {
       fr.readAsText(event);
     },
     formatContact: function (card) {
-      let contactObject = {
+      let contactObj = {
         name: {
           full: "",
           short: "",
@@ -116,45 +116,45 @@ export default {
 
       // set name
       let name = getFieldData(card.get("n"));
-      contactObject.name.prefix = name[3] !== undefined ? name[3] : "";
-      contactObject.name.forename = name[1] !== undefined ? name[1] : "";
-      contactObject.name.middlenames = name[2] !== undefined ? name[2] : "";
-      contactObject.name.surname = name[0] !== undefined ? name[0] : "";
-      contactObject.name.suffix = name[4] !== undefined ? name[4] : "";
+      contactObj.name.prefix = name[3] !== undefined ? name[3] : "";
+      contactObj.name.forename = name[1] !== undefined ? name[1] : "";
+      contactObj.name.middlenames = name[2] !== undefined ? name[2] : "";
+      contactObj.name.surname = name[0] !== undefined ? name[0] : "";
+      contactObj.name.suffix = name[4] !== undefined ? name[4] : "";
 
       // get full name (dirty)
       if (getFieldData(card.get("fn")) !== []) {
-        contactObject.name.full = getFieldData(card.get("fn"))[0];
+        contactObj.name.full = getFieldData(card.get("fn"))[0];
       } else {
-        contactObject.name.full = "";
-        if (contactObject.name.prefix != "")
-          contactObject.name.full += contactObject.name.prefix + " ";
-        if (contactObject.name.forename != "")
-          contactObject.name.full += contactObject.name.forename + " ";
-        if (contactObject.name.middlenames != "")
-          contactObject.name.full += contactObject.name.middlenames + " ";
-        if (contactObject.name.surname != "")
-          contactObject.name.full += contactObject.name.surname + " ";
-        if (contactObject.name.suffix != "")
-          contactObject.name.full += ", " + contactObject.name.suffix;
+        contactObj.name.full = "";
+        if (contactObj.name.prefix != "")
+          contactObj.name.full += contactObj.name.prefix + " ";
+        if (contactObj.name.forename != "")
+          contactObj.name.full += contactObj.name.forename + " ";
+        if (contactObj.name.middlenames != "")
+          contactObj.name.full += contactObj.name.middlenames + " ";
+        if (contactObj.name.surname != "")
+          contactObj.name.full += contactObj.name.surname + " ";
+        if (contactObj.name.suffix != "")
+          contactObj.name.full += ", " + contactObj.name.suffix;
       }
 
       // get short name
-      contactObject.name.short =
-        contactObject.name.forename.charAt(0) + contactObject.name.surname.charAt(0);
+      contactObj.name.short =
+        contactObj.name.forename.charAt(0) + contactObj.name.surname.charAt(0);
 
       // get tel numbers
       let tel = card.get("tel");
       if (tel !== undefined) {
         // check for array (from vCard OBJECT)
         if (card.get("tel")[0] == undefined) {
-          contactObject.tel.push({
+          contactObj.tel.push({
             type: tel.type,
             number: getFieldData(tel)[0],
           });
         } else {
           tel.forEach((number) => {
-            contactObject.tel.push({
+            contactObj.tel.push({
               type: number.type,
               number: getFieldData(number)[0],
             });
@@ -167,9 +167,9 @@ export default {
       if (img !== undefined) {
         if (img[0] === undefined) {
           // get single image
-          contactObject.img[0] = img;
-          contactObject.img[0].data = getFieldData(img)[0];
-          contactObject.img[0].src = this.generateImgSrc(img);
+          contactObj.img[0] = img;
+          contactObj.img[0].data = getFieldData(img)[0];
+          contactObj.img[0].src = this.generateImgSrc(img);
         } else {
           // handle multiple images
           img.forEach((element) => {
@@ -177,12 +177,12 @@ export default {
             eleImg.data = getFieldData(element)[0];
             eleImg.src = this.generateImgSrc(element);
 
-            contactObject.img.push(eleImg);
+            contactObj.img.push(eleImg);
           });
         }
       }
 
-      return contactObject;
+      return contactObj;
     },
     generateImgSrc: (img) => {
       let src = "https://i.pravatar.cc/300";
