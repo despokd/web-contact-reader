@@ -29,9 +29,11 @@
       </v-col>
       <v-col cols="12" v-if="editImage" class="d-flex justify-center">
         <v-btn v-if="img !== undefined" text color="error" @click="removeAll()">
-          Remove
+          <v-icon left>mdi-delete</v-icon>Delete
         </v-btn>
-        <v-btn text color="primary" @click="uploadImage()">Add new</v-btn>
+        <v-btn color="primary" @click="uploadImage()"
+          ><v-icon left>mdi-camera</v-icon>Add new</v-btn
+        >
       </v-col>
       <v-col class="d-flex justify-center">
         <p>{{ contact.name.full }}</p>
