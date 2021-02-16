@@ -20,7 +20,7 @@
               <span class="text-subtitle-2 d-none d-sm-block">
                 {{ contact.org.length > 0 ? contact.org.slice(-1).pop().org : ""
                 }}{{
-                  contact.org.length > 0 && contact.org.title !== ""
+                  contact.org.length > 0 && contact.org.title
                     ? ", " + contact.org.slice(-1).pop().title
                     : ""
                 }}
