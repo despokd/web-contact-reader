@@ -108,7 +108,7 @@ export default {
         img: [],
         tel: [],
         email: [],
-        adress: [],
+        adr: [],
         url: "",
         bday: "",
       };
@@ -202,7 +202,7 @@ export default {
         }
       }
 
-      //get organization
+      // get organization
       let org = card.get("org");
       let title = card.get("title");
       if (org !== undefined) {
@@ -213,10 +213,31 @@ export default {
             title: title != undefined ? getFieldData(title)[0] : "",
           });
         } else {
+          if (!Array.isArray(org.type)) org.type = [org.type];
           org.forEach((org, index) => {
             contactObj.org.push({
               org: getFieldData(org)[0],
               title: title != undefined ? getFieldData(title[index])[0] : "",
+            });
+          });
+        }
+      }
+
+      // get addresses
+      let adr = card.get("adr");
+      if (adr !== undefined) {
+        // check for array (from vCard OBJECT)
+        if (card.get("adr")[0] == undefined) {
+          contactObj.adr.push({
+            type: [adr.type],
+            adr: getFieldData(adr),
+          });
+        } else {
+          adr.forEach((adr) => {
+            if (!Array.isArray(adr.type)) adr.type = [adr.type];
+            contactObj.adr.push({
+              type: adr.type,
+              adr: getFieldData(adr),
             });
           });
         }

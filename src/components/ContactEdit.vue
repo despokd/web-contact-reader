@@ -20,7 +20,7 @@
           </v-btn>
         </v-toolbar>
 
-        <v-card-title class="mt-6">
+        <v-card-title>
           <EditImg :contact="cachedContact" :color="color" />
         </v-card-title>
 
@@ -29,6 +29,7 @@
           <EditTel :tel="cachedContact.tel" />
           <EditEmail :email="cachedContact.email" />
           <EditOrg :org="cachedContact.org" />
+          <EditAdr :adr="cachedContact.adr" />
         </v-card-text>
 
         <v-card-actions :class="[isMobile, 'pb-3 ']">
@@ -53,6 +54,7 @@ import EditName from "@/components/contactEdit/Name.vue";
 import EditTel from "@/components/contactEdit/Tel.vue";
 import EditEmail from "@/components/contactEdit/Email.vue";
 import EditOrg from "@/components/contactEdit/Org.vue";
+import EditAdr from "@/components/contactEdit/Adr.vue";
 
 export default {
   name: "contact-edit",
@@ -62,6 +64,7 @@ export default {
     EditTel,
     EditEmail,
     EditOrg,
+    EditAdr,
   },
   props: {
     contact: Object,
