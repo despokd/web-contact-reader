@@ -17,12 +17,13 @@
 
             <div>
               <h2 class="text-body-1">{{ contact.name.full }}</h2>
-              <span
-                v-for="(item, index) in contact.org"
-                :key="index"
-                class="text-subtitle-2 d-none d-sm-block"
-              >
-                {{ item.org }}{{ item.title !== "" ? ", " + item.title : "" }}
+              <span class="text-subtitle-2 d-none d-sm-block">
+                {{ contact.org.length > 0 ? contact.org.slice(-1).pop().org : ""
+                }}{{
+                  contact.org.length > 0 && contact.org.title !== ""
+                    ? ", " + contact.org.slice(-1).pop().title
+                    : ""
+                }}
               </span>
             </div>
           </v-col>
@@ -59,12 +60,24 @@ export default {
   data: () => {
     return {
       dialog: false,
-      randomColor: "#" + ((Math.random() * 0xffffff) << 0).toString(16),
     };
   },
   computed: {
     img: function () {
       return this.contact.img.slice(-1).pop();
+    },
+    randomColor: function () {
+      let color;
+      if (this.contact.img.length !== 0) return "transparent";
+      while (
+        color === undefined ||
+        color === "#ffffff" ||
+        color === "#000000" ||
+        color.length !== 7
+      ) {
+        color = "#" + ((Math.random() * 0xffffff) << 0).toString(16);
+      }
+      return color;
     },
   },
   methods: {
