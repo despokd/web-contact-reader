@@ -30,6 +30,7 @@
           <EditEmail :email="cachedContact.email" />
           <EditOrg :org="cachedContact.org" />
           <EditAdr :adr="cachedContact.adr" />
+          <EditNote :note="cachedContact.note" />
         </v-card-text>
 
         <v-card-actions :class="[isMobile, 'pb-3 ']">
@@ -55,6 +56,7 @@ import EditTel from "@/components/contactEdit/Tel.vue";
 import EditEmail from "@/components/contactEdit/Email.vue";
 import EditOrg from "@/components/contactEdit/Org.vue";
 import EditAdr from "@/components/contactEdit/Adr.vue";
+import EditNote from "@/components/contactEdit/Note.vue";
 
 export default {
   name: "contact-edit",
@@ -65,6 +67,7 @@ export default {
     EditEmail,
     EditOrg,
     EditAdr,
+    EditNote,
   },
   props: {
     contact: Object,

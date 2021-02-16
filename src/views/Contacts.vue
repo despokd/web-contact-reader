@@ -109,6 +109,7 @@ export default {
         tel: [],
         email: [],
         adr: [],
+        note: "",
         url: "",
         bday: "",
       };
@@ -239,6 +240,19 @@ export default {
               type: adr.type,
               adr: getFieldData(adr),
             });
+          });
+        }
+      }
+
+      // get note
+      let note = card.get("note");
+      if (note !== undefined) {
+        // check for array (from vCard OBJECT)
+        if (card.get("note")[0] == undefined) {
+          contactObj.note = getFieldData(note)[0];
+        } else {
+          note.forEach((note) => {
+            contactObj.note += getFieldData(note)[0] + "\n \n";
           });
         }
       }
