@@ -23,9 +23,9 @@
               ></v-text-field> </v-col
           ></v-row>
         </v-container>
-        <v-container v-else>
+        <v-container v-else class="mt-5">
           <v-row>
-            <v-col cols="12" sm="4" md="4">
+            <v-col cols="12" sm="4" md="4" class="mt-n5">
               <v-text-field
                 dense
                 label="Prefix"
@@ -33,7 +33,7 @@
                 @input="getNameCombinations()"
               ></v-text-field>
             </v-col>
-            <v-col cols="12" sm="8" md="8">
+            <v-col cols="12" sm="8" md="8" class="mt-n5">
               <v-text-field
                 dense
                 label="Forename"
@@ -41,7 +41,7 @@
                 @input="getNameCombinations()"
               ></v-text-field>
             </v-col>
-            <v-col cols="12">
+            <v-col cols="12" class="mt-n5">
               <v-text-field
                 dense
                 label="Middle names"
@@ -49,7 +49,7 @@
                 @input="getNameCombinations()"
               ></v-text-field>
             </v-col>
-            <v-col cols="12" sm="8" md="8">
+            <v-col cols="12" sm="8" md="8" class="mt-n5">
               <v-text-field
                 dense
                 label="Surname"
@@ -57,7 +57,7 @@
                 @input="getNameCombinations()"
               ></v-text-field>
             </v-col>
-            <v-col cols="12" sm="4" md="4">
+            <v-col cols="12" sm="4" md="4" class="mt-n5">
               <v-text-field
                 dense
                 label="Suffix"
