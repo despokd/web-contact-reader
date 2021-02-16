@@ -6,7 +6,7 @@
       </v-col>
       <v-col cols="11">
         <v-container>
-          <v-row v-for="(orgItem, index) in org" :key="index" class="mb-n6">
+          <v-row v-for="(orgItem, index) in org" :key="index">
             <v-col cols="11">
               <v-text-field
                 v-model="orgItem.org"
@@ -31,7 +31,14 @@
           </v-row>
           <v-row>
             <v-col>
-              <v-btn color="primary" small @click="addOrg()" text style="margin-top: 2px">
+              <v-btn
+                color="primary"
+                small
+                @click="addOrg()"
+                text
+                style="margin-top: 2px"
+                :class="org.length > 0 ? 'mt-n8' : ''"
+              >
                 <v-icon left>mdi-plus</v-icon>
                 Add organization
               </v-btn>

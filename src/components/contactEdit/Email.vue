@@ -6,7 +6,7 @@
       </v-col>
       <v-col cols="11">
         <v-container>
-          <v-row v-for="(emailItem, index) in email" :key="index" class="mb-n6">
+          <v-row v-for="(emailItem, index) in email" :key="index">
             <v-col cols="5">
               <v-select
                 v-model="emailItem.type"
@@ -41,6 +41,7 @@
                 @click="addEmail()"
                 text
                 style="margin-top: 2px"
+                :class="email.length > 0 ? 'mt-n8' : ''"
               >
                 <v-icon left>mdi-plus</v-icon>
                 Add e-mail

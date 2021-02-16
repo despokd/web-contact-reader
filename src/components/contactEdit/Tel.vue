@@ -6,7 +6,7 @@
       </v-col>
       <v-col cols="11">
         <v-container>
-          <v-row v-for="(telItem, index) in tel" :key="index" class="mb-n6">
+          <v-row v-for="(telItem, index) in tel" :key="index">
             <v-col cols="5">
               <v-select
                 v-model="telItem.type"
@@ -39,7 +39,14 @@
           </v-row>
           <v-row>
             <v-col>
-              <v-btn color="primary" small @click="addTel()" text style="margin-top: 2px">
+              <v-btn
+                color="primary"
+                small
+                @click="addTel()"
+                text
+                style="margin-top: 2px"
+                :class="tel.length > 0 ? 'mt-n8' : ''"
+              >
                 <v-icon left>mdi-plus</v-icon>
                 Add phone number
               </v-btn>
