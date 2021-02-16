@@ -214,7 +214,7 @@ export default {
           });
         } else {
           org.forEach((org, index) => {
-            contactObj.email.push({
+            contactObj.org.push({
               org: getFieldData(org)[0],
               title: title != undefined ? getFieldData(title[index])[0] : "",
             });
