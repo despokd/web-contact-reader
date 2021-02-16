@@ -22,7 +22,9 @@
               <v-btn
                 text
                 block
+                small
                 color="primary"
+                class="mt-1"
                 :href="'https://www.google.com/maps/place/' + toUrl(adrItem.adr)"
                 target="_blank"
                 aria-label="Search on Google Maps"
