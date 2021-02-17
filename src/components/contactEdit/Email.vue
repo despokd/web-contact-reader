@@ -19,7 +19,12 @@
               ></v-select>
             </v-col>
             <v-col cols="6">
-              <v-text-field v-model="emailItem.email" dense label="E-mail"></v-text-field>
+              <v-text-field
+                v-model="emailItem.email"
+                dense
+                :rules="[rules.email]"
+                label="E-mail"
+              ></v-text-field>
             </v-col>
             <v-col cols="1">
               <v-btn
@@ -76,6 +81,12 @@ export default {
         { name: "Work", value: "work" },
         { name: "Other", value: null },
       ],
+      rules: {
+        email: (value) => {
+          const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+          return pattern.test(value) || "Invalid e-mail.";
+        },
+      },
     };
   },
   methods: {
