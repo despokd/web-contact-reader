@@ -381,16 +381,26 @@ function getFieldData(field) {
   }
 
   // decode quoted printables
+  if ("encoding" in field) {
+    switch (field.encoding) {
+      case "QUOTED-PRINTABLE":
+        dataArr.forEach((string, index) => {
+          let decodedStr = quoted_printable_decode(string);
+          dataArr[index] = decodedStr;
+        });
+        break;
+    }
+  }
+
+  // translate charset
   if ("charset" in field) {
     switch (field.charset) {
       case "UTF-8":
         dataArr.forEach((string, index) => {
-          let decodedStr = utf8_decode(quoted_printable_decode(string));
-          dataArr[index] = decodedStr;
+          let translatedStr = utf8_decode(string);
+          dataArr[index] = translatedStr;
         });
         break;
-      default:
-        dataArr[0] = "error";
     }
   }
 
