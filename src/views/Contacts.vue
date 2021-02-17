@@ -113,7 +113,7 @@ export default {
         email: [],
         adr: [],
         note: "",
-        url: "",
+        url: [],
         bday: "",
       };
 
@@ -242,6 +242,23 @@ export default {
             contactObj.adr.push({
               type: adr.type,
               adr: getFieldData(adr),
+            });
+          });
+        }
+      }
+
+      // get websites
+      let url = card.get("url");
+      if (url !== undefined) {
+        // check for array (from vCard OBJECT)
+        if (card.get("url")[0] == undefined) {
+          contactObj.url.push({
+            url: getFieldData(url)[0],
+          });
+        } else {
+          url.forEach((url) => {
+            contactObj.url.push({
+              url: getFieldData(url)[0],
             });
           });
         }
