@@ -8,7 +8,12 @@
         <v-container>
           <v-row v-for="(urlItem, index) in url" :key="index">
             <v-col :cols="urlItem.url == '' ? 11 : 10">
-              <v-text-field v-model="urlItem.url" dense label="Website"></v-text-field>
+              <v-text-field
+                v-model="urlItem.url"
+                dense
+                :rules="[rules.url]"
+                label="Website"
+              ></v-text-field>
             </v-col>
             <v-col v-if="urlItem.url != ''" cols="1">
               <v-btn
@@ -68,6 +73,16 @@ export default {
   },
   components: {
     SectionIcon,
+  },
+  data: () => {
+    return {
+      rules: {
+        url: (value) => {
+          const pattern = /^(https?):\/\/[^\s$.?#].[^\s]*$/;
+          return pattern.test(value) || "Invalid url.";
+        },
+      },
+    };
   },
   methods: {
     addUrl() {
