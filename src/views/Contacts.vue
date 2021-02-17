@@ -81,7 +81,7 @@ export default {
         // parse file to vCard
         let vCard = require("vcf");
         let vcfFile = fr.result;
-        vcfFile = vcfFile.replace(/[=](\s+)[=]/gm, "=");
+        vcfFile = vcfFile.replace(/[=](\s+)[=](?!$)/gm, "=");
 
         let cards = vCard.parse(vcfFile);
 
