@@ -22,6 +22,7 @@
               <v-text-field
                 v-model="telItem.number"
                 dense
+                :rules="[rules.tel]"
                 label="Phone number"
               ></v-text-field>
             </v-col>
@@ -85,6 +86,12 @@ export default {
         { name: "Pager", value: "pager" },
         { name: "Other", value: null },
       ],
+      rules: {
+        tel: (value) => {
+          const pattern = /^\d?(?:(?:[+]?(?:[\d]{1,3}(?:[ ]+|[-.])))?[(]?(?:[\d]{3})[-/)]?(?:[ ]+)?)?(?:[a-zA-Z2-9][a-zA-Z0-9 \-.]{6,})(?:(?:[ ]+|[xX]|(i:ext[.]?)){1,2}(?:[\d]{1,5}))?$/;
+          return pattern.test(value) || "Invalid number.";
+        },
+      },
     };
   },
   methods: {
