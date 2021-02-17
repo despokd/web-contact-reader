@@ -254,8 +254,9 @@ export default {
         if (card.get("note")[0] == undefined) {
           contactObj.note = getFieldData(note)[0];
         } else {
-          note.forEach((note) => {
-            contactObj.note += getFieldData(note)[0] + "\n \n";
+          note.forEach((note, index) => {
+            if (index > 0) contactObj.note += "\n\n";
+            contactObj.note += getFieldData(note)[0];
           });
         }
       }
