@@ -11,7 +11,7 @@
         </template>
       </v-col>
       <v-col cols="4">
-        <v-btn class="mt-4" block text color="error" @click="deleteAllContacts()">
+        <v-btn class="mt-4" block outlined color="error" @click="deleteAllContacts()">
           Delete all
         </v-btn>
       </v-col>
@@ -80,7 +80,10 @@ export default {
       fr.onload = () => {
         // parse file to vCard
         let vCard = require("vcf");
-        let cards = vCard.parse(fr.result);
+        let vcfFile = fr.result;
+        vcfFile = vcfFile.replace(/[=](\s+)[=]/gm, "=");
+
+        let cards = vCard.parse(vcfFile);
 
         // add to data db
         cards.forEach((card) => {
@@ -294,7 +297,7 @@ export default {
       // delete contacts in vue data
       this.contacts = [];
       // show feedback
-      this.snackbar.text = "All deleted";
+      this.snackbar.text = "All contacts deleted";
       this.snackbar.open = true;
     },
     saveContact(updatedContact) {
@@ -369,10 +372,9 @@ function getFieldData(field) {
   if (field.isArray) {
     dataArr = field;
   } else {
-    let dataStr = field._data;
+    let dataStr = field.valueOf();
     if (dataStr == undefined) return [];
-    // delete line breaks from file
-    dataStr = dataStr.replace(/\r?\n|\r/g, "");
+
     // create array
     dataArr = dataStr.split(";");
   }
@@ -383,7 +385,7 @@ function getFieldData(field) {
       case "UTF-8":
         dataArr.forEach((string, index) => {
           let decodedStr = utf8_decode(quoted_printable_decode(string));
-          dataArr[index] = decodedStr.replace(/=$/, "..."); // add ellipsis, when string not long enough and end with =
+          dataArr[index] = decodedStr;
         });
         break;
       default:
