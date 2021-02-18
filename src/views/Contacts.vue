@@ -340,7 +340,18 @@ export default {
       // get entries of database
       getContactsFromDb().then((result) => {
         this.contacts = result;
+        this.sortBySurname();
       });
+    },
+    sortBySurname() {
+      // first by forename
+      this.contacts = this.contacts.sort((a, b) =>
+        a.name.forename < b.name.forename ? 1 : -1
+      );
+      // final by surename
+      this.contacts = this.contacts.sort((a, b) =>
+        a.name.surname > b.name.surname ? 1 : -1
+      );
     },
     deleteContact(contact) {
       // delete contact in db
@@ -363,8 +374,9 @@ export default {
     saveContact(updatedContact) {
       // update contact in db
       saveContactDb(updatedContact);
-      // update contact in vue data
+      // update contact in vue data + sort
       this.contacts[this.getContactIndex(updatedContact.id)] = updatedContact;
+      this.sortBySurname();
       // show feedback
       this.snackbar.text = updatedContact.name.full + " saved";
       this.snackbar.open = true;
