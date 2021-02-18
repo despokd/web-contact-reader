@@ -112,9 +112,9 @@ export default {
         tel: [],
         email: [],
         adr: [],
-        note: "",
         url: [],
-        bday: "",
+        bday: [],
+        note: "",
       };
 
       // set name
@@ -259,6 +259,48 @@ export default {
           url.forEach((url) => {
             contactObj.url.push({
               url: getFieldData(url)[0],
+            });
+          });
+        }
+      }
+
+      // get birthday
+      let bday = card.get("bday");
+      let bdayStr;
+      let yearProvided = true;
+
+      if (bday !== undefined) {
+        // check for array (from vCard OBJECT)
+        if (card.get("bday")[0] == undefined) {
+          bdayStr = getFieldData(bday)[0];
+          // check for missing year
+          if (bdayStr.charAt(0) == "-") {
+            bdayStr = bdayStr.replace("-", "0001"); // add default year
+            yearProvided = false;
+          }
+
+          contactObj.bday.push({
+            bday: bdayStr,
+            yearProvided: yearProvided,
+            hint: "",
+          });
+        } else {
+          bday.forEach((bday) => {
+            bdayStr = getFieldData(bday)[0];
+            yearProvided = true;
+
+            // check for missing year
+            if (bdayStr.charAt(0) == "-") {
+              bdayStr = bdayStr.replace("-", "0001"); // add default year
+              yearProvided = false;
+            }
+
+            //
+
+            contactObj.bday.push({
+              bday: bdayStr,
+              yearProvided: yearProvided,
+              hint: "",
             });
           });
         }

@@ -31,6 +31,7 @@
           <EditOrg :org="cachedContact.org" />
           <EditAdr :adr="cachedContact.adr" />
           <EditUrl :url="cachedContact.url" />
+          <EditBday :bday="cachedContact.bday" />
           <EditNote :note="cachedContact.note" />
         </v-card-text>
 
@@ -58,6 +59,7 @@ import EditEmail from "@/components/contactEdit/Email.vue";
 import EditOrg from "@/components/contactEdit/Org.vue";
 import EditAdr from "@/components/contactEdit/Adr.vue";
 import EditUrl from "@/components/contactEdit/Url.vue";
+import EditBday from "@/components/contactEdit/Bday.vue";
 import EditNote from "@/components/contactEdit/Note.vue";
 
 export default {
@@ -70,6 +72,7 @@ export default {
     EditOrg,
     EditAdr,
     EditUrl,
+    EditBday,
     EditNote,
   },
   props: {
