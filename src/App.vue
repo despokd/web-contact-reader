@@ -8,12 +8,8 @@
           </v-list-item-avatar>
 
           <v-list-item-content>
-            <v-list-item-title class="title">
-              Contact reader
-            </v-list-item-title>
-            <v-list-item-subtitle>
-              No accounts or apps
-            </v-list-item-subtitle>
+            <v-list-item-title class="title"> Contact reader </v-list-item-title>
+            <v-list-item-subtitle> No accounts or apps </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
       </template>
@@ -58,11 +54,6 @@ export default {
     drawer: null,
     items: [
       { title: "Contacts", icon: "mdi-contacts", to: { name: "Contacts" } },
-      {
-        title: "Companies",
-        icon: "mdi-office-building",
-        to: { name: "Companies" },
-      },
       {
         title: "About",
         icon: "mdi-information-outline",
