@@ -1,10 +1,6 @@
 # Web contact reader
  Display VCF-file contact data readable in a website
-## Features
-- Upload vcf file with drag and drop
-- Show instantly data
-- use table view, with pagination, sorting, searching, details on click
-- Use card view
+
 ## Project setup
 ```
 npm install
