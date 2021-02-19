@@ -1,7 +1,14 @@
 <template>
   <div class="contacts">
+    <ContactEdit
+      v-show="false"
+      ref="editNewContact"
+      :contact="this.contactTemplate"
+      @saved="saveNewContact($event)"
+    />
+
     <v-row>
-      <v-col cols="8">
+      <v-col cols="4">
         <template>
           <v-file-input
             accept=".vcf"
@@ -13,6 +20,11 @@
       <v-col cols="4">
         <v-btn class="mt-4" block outlined color="error" @click="deleteAllContacts()">
           Delete all
+        </v-btn>
+      </v-col>
+      <v-col cols="4">
+        <v-btn class="mt-4" block color="primary" @click="newContact()">
+          Create contact
         </v-btn>
       </v-col>
       <v-col cols="12">
@@ -39,22 +51,49 @@
 
 <script>
 import ContactList from "@/components/ContactList.vue";
+import ContactEdit from "@/components/ContactEdit.vue";
 import { openDB } from "idb/with-async-ittr.js";
 
 export default {
   name: "contacts",
   components: {
     ContactList,
+    ContactEdit,
   },
   data: () => {
     return {
       contacts: [],
+      contactTemplate: {
+        name: {
+          full: "",
+          short: "",
+          prefix: "",
+          forename: "",
+          middlenames: "",
+          surname: "",
+          suffix: "",
+        },
+        org: [],
+        img: [],
+        tel: [],
+        email: [],
+        adr: [],
+        url: [],
+        bday: [],
+        note: "",
+      },
+      editNewContact: false,
       snackbar: {
         text: "Error",
         timeout: "3000",
         open: false,
       },
     };
+  },
+  computed: {
+    contactsC: function () {
+      return this.contacts;
+    },
   },
   created() {
     initContactsDb();
@@ -97,63 +136,46 @@ export default {
       fr.readAsText(event);
     },
     formatContact: function (card) {
-      let contactObj = {
-        name: {
-          full: "",
-          short: "",
-          prefix: "",
-          forename: "",
-          middlenames: "",
-          surname: "",
-          suffix: "",
-        },
-        org: [],
-        img: [],
-        tel: [],
-        email: [],
-        adr: [],
-        url: [],
-        bday: [],
-        note: "",
-      };
+      // set new contact object
+      let contactTemplate = this.contactTemplate;
 
       // set name
       let name = getFieldData(card.get("n"));
-      contactObj.name.prefix = name[3] !== undefined ? name[3] : "";
-      contactObj.name.forename = name[1] !== undefined ? name[1] : "";
-      contactObj.name.middlenames = name[2] !== undefined ? name[2] : "";
-      contactObj.name.surname = name[0] !== undefined ? name[0] : "";
-      contactObj.name.suffix = name[4] !== undefined ? name[4] : "";
+      contactTemplate.name.prefix = name[3] !== undefined ? name[3] : "";
+      contactTemplate.name.forename = name[1] !== undefined ? name[1] : "";
+      contactTemplate.name.middlenames = name[2] !== undefined ? name[2] : "";
+      contactTemplate.name.surname = name[0] !== undefined ? name[0] : "";
+      contactTemplate.name.suffix = name[4] !== undefined ? name[4] : "";
 
       // get full name (dirty)
       if (getFieldData(card.get("fn")) !== []) {
-        contactObj.name.full = getFieldData(card.get("fn"))[0];
+        contactTemplate.name.full = getFieldData(card.get("fn"))[0];
       } else {
-        contactObj.name.full = "";
-        if (contactObj.name.prefix != "")
-          contactObj.name.full += contactObj.name.prefix + " ";
-        if (contactObj.name.forename != "")
-          contactObj.name.full += contactObj.name.forename + " ";
-        if (contactObj.name.middlenames != "")
-          contactObj.name.full += contactObj.name.middlenames + " ";
-        if (contactObj.name.surname != "")
-          contactObj.name.full += contactObj.name.surname + " ";
-        if (contactObj.name.suffix != "")
-          contactObj.name.full += ", " + contactObj.name.suffix;
+        contactTemplate.name.full = "";
+        if (contactTemplate.name.prefix != "")
+          contactTemplate.name.full += contactTemplate.name.prefix + " ";
+        if (contactTemplate.name.forename != "")
+          contactTemplate.name.full += contactTemplate.name.forename + " ";
+        if (contactTemplate.name.middlenames != "")
+          contactTemplate.name.full += contactTemplate.name.middlenames + " ";
+        if (contactTemplate.name.surname != "")
+          contactTemplate.name.full += contactTemplate.name.surname + " ";
+        if (contactTemplate.name.suffix != "")
+          contactTemplate.name.full += ", " + contactTemplate.name.suffix;
       }
 
       // get short name
-      contactObj.name.short =
-        contactObj.name.forename.charAt(0) + contactObj.name.surname.charAt(0);
+      contactTemplate.name.short =
+        contactTemplate.name.forename.charAt(0) + contactTemplate.name.surname.charAt(0);
 
       // get image
       let img = card.get("photo");
       if (img !== undefined) {
         if (img[0] === undefined) {
           // get single image
-          contactObj.img[0] = img;
-          contactObj.img[0].data = getFieldData(img)[0];
-          contactObj.img[0].src = this.generateImgSrc(img);
+          contactTemplate.img[0] = img;
+          contactTemplate.img[0].data = getFieldData(img)[0];
+          contactTemplate.img[0].src = this.generateImgSrc(img);
         } else {
           // handle multiple images
           img.forEach((element) => {
@@ -161,7 +183,7 @@ export default {
             eleImg.data = getFieldData(element)[0];
             eleImg.src = this.generateImgSrc(element);
 
-            contactObj.img.push(eleImg);
+            contactTemplate.img.push(eleImg);
           });
         }
       }
@@ -171,14 +193,14 @@ export default {
       if (tel !== undefined) {
         // check for array (from vCard OBJECT)
         if (card.get("tel")[0] == undefined) {
-          contactObj.tel.push({
+          contactTemplate.tel.push({
             type: [tel.type],
             number: getFieldData(tel)[0],
           });
         } else {
           tel.forEach((number) => {
             if (!Array.isArray(number.type)) number.type = [number.type];
-            contactObj.tel.push({
+            contactTemplate.tel.push({
               type: number.type,
               number: getFieldData(number)[0],
             });
@@ -191,14 +213,14 @@ export default {
       if (email !== undefined) {
         // check for array (from vCard OBJECT)
         if (card.get("email")[0] == undefined) {
-          contactObj.email.push({
+          contactTemplate.email.push({
             type: [email.type],
             email: getFieldData(email)[0],
           });
         } else {
           email.forEach((email) => {
             if (!Array.isArray(email.type)) email.type = [email.type];
-            contactObj.email.push({
+            contactTemplate.email.push({
               type: email.type,
               email: getFieldData(email)[0],
             });
@@ -212,14 +234,14 @@ export default {
       if (org !== undefined) {
         // check for array (from vCard OBJECT)
         if (card.get("org")[0] == undefined) {
-          contactObj.org.push({
+          contactTemplate.org.push({
             org: getFieldData(org)[0],
             title: title != undefined ? getFieldData(title)[0] : "",
           });
         } else {
           if (!Array.isArray(org.type)) org.type = [org.type];
           org.forEach((org, index) => {
-            contactObj.org.push({
+            contactTemplate.org.push({
               org: getFieldData(org)[0],
               title: title != undefined ? getFieldData(title[index])[0] : "",
             });
@@ -232,14 +254,14 @@ export default {
       if (adr !== undefined) {
         // check for array (from vCard OBJECT)
         if (card.get("adr")[0] == undefined) {
-          contactObj.adr.push({
+          contactTemplate.adr.push({
             type: [adr.type],
             adr: getFieldData(adr),
           });
         } else {
           adr.forEach((adr) => {
             if (!Array.isArray(adr.type)) adr.type = [adr.type];
-            contactObj.adr.push({
+            contactTemplate.adr.push({
               type: adr.type,
               adr: getFieldData(adr),
             });
@@ -252,12 +274,12 @@ export default {
       if (url !== undefined) {
         // check for array (from vCard OBJECT)
         if (card.get("url")[0] == undefined) {
-          contactObj.url.push({
+          contactTemplate.url.push({
             url: getFieldData(url)[0],
           });
         } else {
           url.forEach((url) => {
-            contactObj.url.push({
+            contactTemplate.url.push({
               url: getFieldData(url)[0],
             });
           });
@@ -267,7 +289,6 @@ export default {
       // get birthday
       let bday = card.get("bday");
       let bdayStr;
-      let yearProvided = true;
 
       if (bday !== undefined) {
         // check for array (from vCard OBJECT)
@@ -276,30 +297,24 @@ export default {
           // check for missing year
           if (bdayStr.charAt(0) == "-") {
             bdayStr = bdayStr.replace("-", "0001"); // add default year
-            yearProvided = false;
           }
 
-          contactObj.bday.push({
+          contactTemplate.bday.push({
             bday: bdayStr,
-            yearProvided: yearProvided,
             hint: "",
           });
         } else {
           bday.forEach((bday) => {
             bdayStr = getFieldData(bday)[0];
-            yearProvided = true;
 
             // check for missing year
             if (bdayStr.charAt(0) == "-") {
               bdayStr = bdayStr.replace("-", "0001"); // add default year
-              yearProvided = false;
             }
 
-            //
-
-            contactObj.bday.push({
+            // add birthday
+            contactTemplate.bday.push({
               bday: bdayStr,
-              yearProvided: yearProvided,
               hint: "",
             });
           });
@@ -311,16 +326,16 @@ export default {
       if (note !== undefined) {
         // check for array (from vCard OBJECT)
         if (card.get("note")[0] == undefined) {
-          contactObj.note = getFieldData(note)[0];
+          contactTemplate.note = getFieldData(note)[0];
         } else {
           note.forEach((note, index) => {
-            if (index > 0) contactObj.note += "\n\n";
-            contactObj.note += getFieldData(note)[0];
+            if (index > 0) contactTemplate.note += "\n\n";
+            contactTemplate.note += getFieldData(note)[0];
           });
         }
       }
 
-      return contactObj;
+      return contactTemplate;
     },
     generateImgSrc: (img) => {
       let src = "https://i.pravatar.cc/300";
@@ -371,12 +386,30 @@ export default {
       this.snackbar.text = "All contacts deleted";
       this.snackbar.open = true;
     },
+    newContact() {
+      this.editNewContact = true;
+      this.$refs.editNewContact.dialog = true;
+    },
+    saveNewContact(contact) {
+      // close editing
+      this.editNewContact = false;
+      // save to DB / vue date
+      this.saveContact(contact);
+      // reset default data
+    },
     saveContact(updatedContact) {
       // update contact in db
       saveContactDb(updatedContact);
-      // update contact in vue data + sort
-      this.contacts[this.getContactIndex(updatedContact.id)] = updatedContact;
-      this.sortBySurname();
+
+      // update contact in vue data
+      if ("id" in updatedContact) {
+        this.contacts[updatedContact.id] = updatedContact;
+        // sort contacts
+        this.sortBySurname();
+      } else {
+        this.getContacts();
+      }
+
       // show feedback
       this.snackbar.text = updatedContact.name.full + " saved";
       this.snackbar.open = true;
