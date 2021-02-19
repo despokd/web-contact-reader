@@ -7,25 +7,26 @@
       @saved="saveNewContact($event)"
     />
 
-    <v-row>
-      <v-col cols="4">
-        <template>
-          <v-file-input
-            accept=".vcf"
-            label="Import .vcf-file"
-            @change="importVcf($event)"
-          ></v-file-input>
-        </template>
+    <v-row class="mt-5">
+      <v-col cols="12" sm="6" md="3" class="mt-n3">
+        <v-file-input
+          accept=".vcf"
+          label="Import .vcf-file"
+          @change="importVcf($event)"
+        ></v-file-input>
       </v-col>
-      <v-col cols="4">
-        <v-btn class="mt-4" block outlined color="error" @click="deleteAllContacts()">
+      <v-col cols="12" sm="6" md="3">
+        <v-btn block outlined color="error" @click="deleteAllContacts()">
           Delete all
         </v-btn>
       </v-col>
-      <v-col cols="4">
-        <v-btn class="mt-4" block color="primary" @click="newContact()">
-          Create contact
+      <v-col cols="12" sm="6" md="3">
+        <v-btn block outlined color="primary" @click="exportContacts()">
+          Export contacts
         </v-btn>
+      </v-col>
+      <v-col cols="12" sm="6" md="3">
+        <v-btn block color="primary" @click="newContact()"> Create contact </v-btn>
       </v-col>
       <v-col cols="12">
         <ContactList
@@ -123,6 +124,7 @@ export default {
         vcfFile = vcfFile.replace(/[=](\s+)[=](?!$)/gm, "=");
 
         let cards = vCard.parse(vcfFile);
+        console.log(cards);
 
         // add to data db
         cards.forEach((card) => {
@@ -418,6 +420,96 @@ export default {
       return this.contacts.findIndex((element) => {
         return element.id === id;
       });
+    },
+    exportContacts() {
+      // init vCard
+      let vCard = require("vcf");
+      let cards = [];
+
+      // format contacts to vCard
+      this.contacts.forEach((contact) => {
+        let contactCard = new vCard();
+        // version
+        contactCard.version = "4.0";
+        // name
+        contactCard.add(
+          "n",
+          contact.name.surname +
+            ";" +
+            contact.name.forename +
+            ";" +
+            contact.name.middlenames +
+            ";" +
+            contact.name.prefix +
+            ";" +
+            contact.name.suffix
+        );
+        // full name
+        contactCard.add("fn", contact.name.full);
+        contact.org.forEach((org) => {
+          contactCard.add("org", org.org);
+          contactCard.add("title", org.title);
+        });
+        // photo
+        // TODO test support of urls (current base64)
+        contact.img.forEach((img) => {
+          contactCard.add("photo", img.src);
+        });
+        // telephone number
+        contact.tel.forEach((tel) => {
+          contactCard.add("tel", tel.number, { type: tel.type });
+        });
+        // address
+        contact.adr.forEach((adr) => {
+          contactCard.add(
+            "adr",
+            adr.adr[0] +
+              ";" +
+              adr.adr[1] +
+              ";" +
+              adr.adr[2] +
+              ";" +
+              adr.adr[3] +
+              ";" +
+              adr.adr[4] +
+              ";" +
+              adr.adr[5] +
+              ";" +
+              adr.adr[6],
+            { type: adr.type }
+          );
+        });
+        // e-mail
+        contact.email.forEach((email) => {
+          contactCard.add("email", email.email, { type: email.type });
+        });
+        // url
+        contact.url.forEach((url) => {
+          contactCard.add("url", url.url);
+        });
+
+        // add to vCards
+        cards.push(contactCard);
+      });
+
+      // create vcf file content
+      let vcf = cards.toString();
+
+      // create download
+      let anchor = document.createElement("a");
+      anchor.setAttribute(
+        "href",
+        "data:text/vcard;charset=utf-8," + encodeURIComponent(vcf)
+      );
+      anchor.setAttribute("download", "contacts.vcf");
+      anchor.style.display = "none";
+      document.body.appendChild(anchor);
+      anchor.click();
+      document.body.removeChild(anchor);
+
+      // show feedback
+      this.snackbar.text = ".vcf created";
+      this.snackbar.open = true;
     },
   },
 };
