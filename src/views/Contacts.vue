@@ -137,7 +137,7 @@ export default {
     },
     formatContact: function (card) {
       // set new contact object
-      let contactTemplate = this.contactTemplate;
+      let contactTemplate = JSON.parse(JSON.stringify(this.contactTemplate)); // dirty, but 'contactTemplate = { ...this.contactTemplate };' doesn't worked for cloning
 
       // set name
       let name = getFieldData(card.get("n"));
@@ -338,7 +338,7 @@ export default {
       return contactTemplate;
     },
     generateImgSrc: (img) => {
-      let src = "https://i.pravatar.cc/300";
+      let src = "https://i.pravatar.cc/300"; // fallback image
       if (img !== undefined) {
         if (img.encoding !== undefined) {
           // base64
