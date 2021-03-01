@@ -142,9 +142,7 @@ export default {
         let vCard = require("vcf");
         let vcfFile = fr.result;
         vcfFile = vcfFile.replace(/[=](\s+)[=](?!$)/gm, "=");
-
         let cards = vCard.parse(vcfFile);
-        console.log(cards);
 
         // add to data db
         cards.forEach((card) => {
@@ -359,10 +357,14 @@ export default {
       if (img !== undefined) {
         if (img.encoding !== undefined) {
           // base64
-          src = "data:image/" + img.type + ";base64," + img.data;
+          return "data:image/" + img.type + ";base64," + getFieldData(img)[0];
         } else {
           // url
-          src = img.data;
+          let data = getFieldData(img);
+          if (data[0].substring(0, 3) == "dat") {
+            return data[0] + ";" + data[1];
+          }
+          return data[0];
         }
       }
 
