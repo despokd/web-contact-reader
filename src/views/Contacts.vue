@@ -14,7 +14,7 @@
       @change="importVcf($event)"
     ></v-file-input>
 
-    <v-row class="mt-5">
+    <v-row>
       <v-col cols="12">
         <ContactList
           v-for="contact in contacts"
