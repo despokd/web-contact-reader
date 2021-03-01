@@ -35,7 +35,7 @@
         @click="drawer = !drawer"
       ></v-app-bar-nav-icon>
 
-      <v-toolbar-title>{{ $route.name }}</v-toolbar-title>
+      <v-app-bar-title>{{ $route.name }}</v-app-bar-title>
     </v-app-bar>
 
     <v-main>
