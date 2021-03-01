@@ -3,7 +3,7 @@
     <ContactEdit
       v-show="false"
       ref="editNewContact"
-      :contact="this.contactTemplate"
+      :contact="this.conNew"
       @saved="saveNewContact($event)"
     />
     <v-file-input
@@ -80,7 +80,7 @@ export default {
   data: () => {
     return {
       contacts: [],
-      contactTemplate: {
+      conNew: {
         name: {
           full: "",
           short: "",
@@ -159,45 +159,40 @@ export default {
     },
     formatContact: function (card) {
       // set new contact object
-      let contactTemplate = JSON.parse(JSON.stringify(this.contactTemplate)); // dirty, but 'contactTemplate = { ...this.contactTemplate };' doesn't worked for cloning
+      let conNew = JSON.parse(JSON.stringify(this.conNew)); // dirty, but 'conNew = { ...this.conNew };' doesn't worked for cloning
 
       // set name
       let name = getFieldData(card.get("n"));
-      contactTemplate.name.prefix = name[3] !== undefined ? name[3] : "";
-      contactTemplate.name.forename = name[1] !== undefined ? name[1] : "";
-      contactTemplate.name.middlenames = name[2] !== undefined ? name[2] : "";
-      contactTemplate.name.surname = name[0] !== undefined ? name[0] : "";
-      contactTemplate.name.suffix = name[4] !== undefined ? name[4] : "";
+      conNew.name.prefix = name[3] !== undefined ? name[3] : "";
+      conNew.name.forename = name[1] !== undefined ? name[1] : "";
+      conNew.name.middlenames = name[2] !== undefined ? name[2] : "";
+      conNew.name.surname = name[0] !== undefined ? name[0] : "";
+      conNew.name.suffix = name[4] !== undefined ? name[4] : "";
 
       // get full name (dirty)
       if (getFieldData(card.get("fn")) !== []) {
-        contactTemplate.name.full = getFieldData(card.get("fn"))[0];
+        conNew.name.full = getFieldData(card.get("fn"))[0];
       } else {
-        contactTemplate.name.full = "";
-        if (contactTemplate.name.prefix != "")
-          contactTemplate.name.full += contactTemplate.name.prefix + " ";
-        if (contactTemplate.name.forename != "")
-          contactTemplate.name.full += contactTemplate.name.forename + " ";
-        if (contactTemplate.name.middlenames != "")
-          contactTemplate.name.full += contactTemplate.name.middlenames + " ";
-        if (contactTemplate.name.surname != "")
-          contactTemplate.name.full += contactTemplate.name.surname + " ";
-        if (contactTemplate.name.suffix != "")
-          contactTemplate.name.full += ", " + contactTemplate.name.suffix;
+        conNew.name.full = "";
+        if (conNew.name.prefix != "") conNew.name.full += conNew.name.prefix + " ";
+        if (conNew.name.forename != "") conNew.name.full += conNew.name.forename + " ";
+        if (conNew.name.middlenames != "")
+          conNew.name.full += conNew.name.middlenames + " ";
+        if (conNew.name.surname != "") conNew.name.full += conNew.name.surname + " ";
+        if (conNew.name.suffix != "") conNew.name.full += ", " + conNew.name.suffix;
       }
 
       // get short name
-      contactTemplate.name.short =
-        contactTemplate.name.forename.charAt(0) + contactTemplate.name.surname.charAt(0);
+      conNew.name.short = conNew.name.forename.charAt(0) + conNew.name.surname.charAt(0);
 
       // get image
       let img = card.get("photo");
       if (img !== undefined) {
         if (img[0] === undefined) {
           // get single image
-          contactTemplate.img[0] = img;
-          contactTemplate.img[0].data = getFieldData(img)[0];
-          contactTemplate.img[0].src = this.generateImgSrc(img);
+          conNew.img[0] = img;
+          conNew.img[0].data = getFieldData(img)[0];
+          conNew.img[0].src = this.generateImgSrc(img);
         } else {
           // handle multiple images
           img.forEach((element) => {
@@ -205,7 +200,7 @@ export default {
             eleImg.data = getFieldData(element)[0];
             eleImg.src = this.generateImgSrc(element);
 
-            contactTemplate.img.push(eleImg);
+            conNew.img.push(eleImg);
           });
         }
       }
@@ -215,14 +210,14 @@ export default {
       if (tel !== undefined) {
         // check for array (from vCard OBJECT)
         if (card.get("tel")[0] == undefined) {
-          contactTemplate.tel.push({
+          conNew.tel.push({
             type: [tel.type],
             number: getFieldData(tel)[0],
           });
         } else {
           tel.forEach((number) => {
             if (!Array.isArray(number.type)) number.type = [number.type];
-            contactTemplate.tel.push({
+            conNew.tel.push({
               type: number.type,
               number: getFieldData(number)[0],
             });
@@ -235,14 +230,14 @@ export default {
       if (email !== undefined) {
         // check for array (from vCard OBJECT)
         if (card.get("email")[0] == undefined) {
-          contactTemplate.email.push({
+          conNew.email.push({
             type: [email.type],
             email: getFieldData(email)[0],
           });
         } else {
           email.forEach((email) => {
             if (!Array.isArray(email.type)) email.type = [email.type];
-            contactTemplate.email.push({
+            conNew.email.push({
               type: email.type,
               email: getFieldData(email)[0],
             });
@@ -256,14 +251,14 @@ export default {
       if (org !== undefined) {
         // check for array (from vCard OBJECT)
         if (card.get("org")[0] == undefined) {
-          contactTemplate.org.push({
+          conNew.org.push({
             org: getFieldData(org)[0],
             title: title != undefined ? getFieldData(title)[0] : "",
           });
         } else {
           if (!Array.isArray(org.type)) org.type = [org.type];
           org.forEach((org, index) => {
-            contactTemplate.org.push({
+            conNew.org.push({
               org: getFieldData(org)[0],
               title: title != undefined ? getFieldData(title[index])[0] : "",
             });
@@ -276,14 +271,14 @@ export default {
       if (adr !== undefined) {
         // check for array (from vCard OBJECT)
         if (card.get("adr")[0] == undefined) {
-          contactTemplate.adr.push({
+          conNew.adr.push({
             type: [adr.type],
             adr: getFieldData(adr),
           });
         } else {
           adr.forEach((adr) => {
             if (!Array.isArray(adr.type)) adr.type = [adr.type];
-            contactTemplate.adr.push({
+            conNew.adr.push({
               type: adr.type,
               adr: getFieldData(adr),
             });
@@ -296,12 +291,12 @@ export default {
       if (url !== undefined) {
         // check for array (from vCard OBJECT)
         if (card.get("url")[0] == undefined) {
-          contactTemplate.url.push({
+          conNew.url.push({
             url: getFieldData(url)[0],
           });
         } else {
           url.forEach((url) => {
-            contactTemplate.url.push({
+            conNew.url.push({
               url: getFieldData(url)[0],
             });
           });
@@ -321,7 +316,7 @@ export default {
             bdayStr = bdayStr.replace("-", "0001"); // add default year
           }
 
-          contactTemplate.bday.push({
+          conNew.bday.push({
             bday: bdayStr,
             hint: "",
           });
@@ -335,7 +330,7 @@ export default {
             }
 
             // add birthday
-            contactTemplate.bday.push({
+            conNew.bday.push({
               bday: bdayStr,
               hint: "",
             });
@@ -348,16 +343,16 @@ export default {
       if (note !== undefined) {
         // check for array (from vCard OBJECT)
         if (card.get("note")[0] == undefined) {
-          contactTemplate.note = getFieldData(note)[0];
+          conNew.note = getFieldData(note)[0];
         } else {
           note.forEach((note, index) => {
-            if (index > 0) contactTemplate.note += "\n\n";
-            contactTemplate.note += getFieldData(note)[0];
+            if (index > 0) conNew.note += "\n\n";
+            conNew.note += getFieldData(note)[0];
           });
         }
       }
 
-      return contactTemplate;
+      return conNew;
     },
     generateImgSrc: (img) => {
       let src = "https://i.pravatar.cc/300"; // fallback image
