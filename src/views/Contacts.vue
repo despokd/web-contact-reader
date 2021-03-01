@@ -6,28 +6,15 @@
       :contact="this.contactTemplate"
       @saved="saveNewContact($event)"
     />
+    <v-file-input
+      ref="fileInput"
+      class="d-none"
+      accept=".vcf"
+      label="Import .vcf-file"
+      @change="importVcf($event)"
+    ></v-file-input>
 
     <v-row class="mt-5">
-      <v-col cols="12" sm="6" md="3" class="mt-n3">
-        <v-file-input
-          accept=".vcf"
-          label="Import .vcf-file"
-          @change="importVcf($event)"
-        ></v-file-input>
-      </v-col>
-      <v-col cols="12" sm="6" md="3">
-        <v-btn block outlined color="error" @click="deleteAllContacts()">
-          Delete all
-        </v-btn>
-      </v-col>
-      <v-col cols="12" sm="6" md="3">
-        <v-btn block outlined color="primary" @click="exportContacts()">
-          Export contacts
-        </v-btn>
-      </v-col>
-      <v-col cols="12" sm="6" md="3">
-        <v-btn block color="primary" @click="newContact()"> Create contact </v-btn>
-      </v-col>
       <v-col cols="12">
         <ContactList
           v-for="contact in contacts"
@@ -38,6 +25,35 @@
         />
       </v-col>
     </v-row>
+
+    <v-speed-dial
+      v-model="fab"
+      fixed
+      right
+      bottom
+      direction="top"
+      open-on-hover
+      transition="slide-y-reverse-transition"
+    >
+      <template v-slot:activator>
+        <v-btn v-model="fab" color="primary" fab title="Manage contacts">
+          <v-icon v-if="fab"> mdi-close </v-icon>
+          <v-icon v-else> mdi-account-multiple-plus</v-icon>
+        </v-btn>
+      </template>
+      <v-btn fab small color="success" title="Create contact" @click="newContact()">
+        <v-icon>mdi-plus</v-icon>
+      </v-btn>
+      <v-btn fab small color="primary" title="Export all" @click="exportContacts()">
+        <v-icon>mdi-download</v-icon>
+      </v-btn>
+      <v-btn fab small color="primary" title="Import contacts" @click="openFileInput()">
+        <v-icon>mdi-upload</v-icon>
+      </v-btn>
+      <v-btn fab small color="error" title="Delete all" @click="deleteAllContacts()">
+        <v-icon>mdi-delete</v-icon>
+      </v-btn>
+    </v-speed-dial>
 
     <v-snackbar v-model="snackbar.open" :timeout="snackbar.timeout">
       {{ snackbar.text }}
@@ -84,6 +100,7 @@ export default {
         note: "",
       },
       editNewContact: false,
+      fab: false,
       snackbar: {
         text: "Error",
         timeout: "3000",
@@ -101,6 +118,9 @@ export default {
     this.getContacts();
   },
   methods: {
+    openFileInput: function () {
+      this.$refs.fileInput.$refs.input.click();
+    },
     importVcf: function (event) {
       // Browser is not compatible
       if (!window.FileReader) {
