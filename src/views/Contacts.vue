@@ -79,7 +79,7 @@
 
 <script>
 import ContactList from "@/components/ContactList.vue";
-import ContactEdit from "@/components/ContactEdit.vue";
+import ContactEdit from "@/components/contactEdit/ContactEdit.vue";
 import { openDB } from "idb/with-async-ittr.js";
 
 export default {

@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import ContactEdit from "@/components/ContactEdit.vue";
+import ContactEdit from "@/components/contactEdit/ContactEdit.vue";
 
 export default {
   name: "contact-list",
