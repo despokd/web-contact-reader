@@ -23,6 +23,17 @@
           @saved="saveContact($event)"
           @deleted="deleteContact($event)"
         />
+
+        <div
+          v-if="contacts.length === 0"
+          class="d-flex align-center justify-center"
+          style="height: 90vh"
+        >
+          <v-btn color="primary" x-large @click="newContact()">
+            <v-icon left>mdi-account-plus</v-icon>
+            Create a new contact
+          </v-btn>
+        </div>
       </v-col>
     </v-row>
 
