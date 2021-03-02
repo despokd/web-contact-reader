@@ -77,6 +77,16 @@
   </div>
 </template>
 
+<style>
+.avatar-gradient {
+  background: linear-gradient(
+    0deg,
+    rgba(1, 22, 101, 0.6012780112044818) 0%,
+    rgba(0, 212, 255, 0) 100%
+  );
+}
+</style>
+
 <script>
 import ContactList from "@/components/ContactList.vue";
 import ContactEdit from "@/components/contactEdit/ContactEdit.vue";

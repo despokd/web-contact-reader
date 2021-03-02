@@ -5,7 +5,7 @@
         <v-row align="center">
           <v-col cols="8" sm="4" class="d-flex align-center">
             <div class="mr-3">
-              <v-avatar :color="randomColor">
+              <v-avatar :color="randomColor" class="avatar-gradient">
                 <img
                   v-if="contact.img.length !== 0"
                   :src="this.img.src"

@@ -15,7 +15,7 @@
           <v-avatar
             :color="color"
             size="100"
-            class="editImage"
+            class="editImage avatar-gradient"
             @click="editImage = !editImage"
           >
             <img
