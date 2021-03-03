@@ -20,6 +20,7 @@
                 dense
                 label="Surname"
                 v-model="name.surname"
+                @input="getNameCombinations()"
               ></v-text-field> </v-col
           ></v-row>
         </v-container>
