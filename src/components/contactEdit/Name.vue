@@ -7,7 +7,7 @@
       <v-col cols="10">
         <v-container v-if="!isExpanded">
           <v-row
-            ><v-col cols="5">
+            ><v-col cols="12" sm="5">
               <v-text-field
                 dense
                 label="Forename"
@@ -15,7 +15,7 @@
                 @input="getNameCombinations()"
               ></v-text-field>
             </v-col>
-            <v-col cols="7">
+            <v-col cols="12" sm="7">
               <v-text-field
                 dense
                 label="Surname"
