@@ -410,17 +410,23 @@ export default {
     deleteContact(contact) {
       // delete contact in db
       deleteContactDb(contact.id);
+
       // delete contact in vue data
-      this.contacts.splice(this.getContactIndex(contact.id), 1);
+      let i = this.getContactIndex(contact.id);
+      this.contacts = [...this.contacts.slice(0, i), ...this.contacts.slice(i + 1)];
+
       // show feedback
-      this.snackbar.text = contact.name.full + " deleted";
+      let name = contact.name.full !== undefined ? contact.name.full : "Contact";
+      this.snackbar.text = name + " deleted";
       this.snackbar.open = true;
     },
     deleteAllContacts() {
       // delete contacts in db
       deleteAllContactsDb();
+
       // delete contacts in vue data
       this.contacts = [];
+
       // show feedback
       this.snackbar.text = "All contacts deleted";
       this.snackbar.open = true;
