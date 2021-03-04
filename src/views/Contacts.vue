@@ -448,10 +448,11 @@ export default {
 
       // update contact in vue data
       if ("id" in updatedContact) {
-        this.contacts[updatedContact.id] = updatedContact;
+        this.contacts[this.getContactIndex(updatedContact.id)] = updatedContact;
         // sort contacts
         this.sortBySurname();
       } else {
+        // fallback -> add to list
         this.getContacts();
       }
 
